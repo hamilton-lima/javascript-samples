@@ -1,0 +1,43 @@
+<html>
+<body>
+<canvas width="640" height="480" id="meuCanvas">
+</canvas>
+
+<script>
+	
+	var meuCanvasLegal = document.getElementById("meuCanvas");
+	var ctx = meuCanvasLegal.getContext("2d");
+    ctx.fillStyle = '#8ED6FF';
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'black';
+
+	var x = 10;
+	var y = 10;
+	var direcao = 15;
+	var largura = 20;
+	var altura = 20;
+
+	function limpar(){
+		ctx.clearRect(0,0,640,480);	
+	}
+
+	function exibir(){
+		ctx.beginPath();
+        ctx.rect(x, y, largura, altura);
+        ctx.fill();
+        ctx.stroke();
+	}
+	
+	function executar(){
+		limpar();
+		exibir();
+		setTimeout( executar, 30 );
+	}
+
+	// inicia
+	executar();
+
+</script>
+
+</body>
+</html>
