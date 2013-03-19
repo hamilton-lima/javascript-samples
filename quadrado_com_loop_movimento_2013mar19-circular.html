@@ -5,32 +5,49 @@
 
 <script>
 	
+	var larguraLinha = 1;
+	
 	var meuCanvasLegal = document.getElementById("meuCanvas");
 	var ctx = meuCanvasLegal.getContext("2d");
     ctx.fillStyle = '#8ED6FF';
-    ctx.lineWidth = 5;
+    ctx.lineWidth = larguraLinha;
     ctx.strokeStyle = 'black';
 
 	var x = 10;
 	var y = 10;
-	var direcao = 15;
-	var largura = 20;
-	var altura = 20;
+	var direcaoX = 15;
+	var direcaoY = 0;
+	var largura = 40;
+	var altura = 40;
 
 	function limpar(){
 		ctx.clearRect(0,0,640,480);	
 	}
 	
-	var oi = 320;
-
 	function atualizar(){
-		// estava assim : meuCanvasLegal.width
-		if( x < oi ){
-			x = x + 5;
-		} else {
-			x = x -5;
+	
+		if( x + largura > meuCanvasLegal.width  ){
+			direcaoX = 0;
+			direcaoY = 10;	
 		}
 		
+		if( y + altura > meuCanvasLegal.height ){
+			direcaoX = -10;
+			direcaoY = 0;	
+		}
+	
+		if( x < 0 ){
+			direcaoX = 0;
+			direcaoY = -10;	
+		}	
+	
+		if( y < 0 ){
+			direcaoX = 10;
+			direcaoY = 0;	
+		}	
+
+		x = x + direcaoX;
+		y = y + direcaoY;
 	}
 
 	function exibir(){
@@ -39,13 +56,12 @@
         ctx.fill();
         ctx.stroke();
 	}
-
 	
 	function executar(){
 		limpar();
 		atualizar();
 		exibir();
-		setTimeout( executar, 10 );
+		setTimeout( executar, 30 );
 	}
 
 	console.debug("largura do canvas = " + meuCanvasLegal.width);
