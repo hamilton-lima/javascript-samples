@@ -1,0 +1,85 @@
+<html>
+<body>
+<canvas width="640" height="480" id="meuCanvas">
+</canvas>
+
+<script>
+	
+	var meuCanvasLegal = document.getElementById("meuCanvas");
+	var ctx = meuCanvasLegal.getContext("2d");
+    ctx.fillStyle = '#8ED6FF';
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'black';
+
+	var x = 10;
+	var y = 10;
+	var direcaoX = 15;
+	var direcaoY = 0;
+	var largura = 20;
+	var altura = 20;
+	var margem = 10;
+
+	function limpar(){
+		ctx.clearRect(0,0,640,480);	
+	}
+	
+	function atualizar(){
+	
+		if( x > meuCanvasLegal.width ){
+			direcaoX = direcaoX * -1;
+		}
+		
+		// ditado pelo vitor
+		if( x < 0 ){
+			direcaoX = direcaoX * -1;
+		}
+	
+		x = x + direcaoX;
+		y = y + direcaoY;
+	}
+
+	function exibir(){
+		ctx.beginPath();
+
+/*
+		var n = 0;
+        ctx.rect(x, y + (n * (altura+margem)), largura, altura);   
+        
+        n = 1;
+        ctx.rect(x, y + (n * (altura+margem)), largura, altura);   
+		
+		n = 2;
+        ctx.rect(x, y + (n * (altura+margem)), largura, altura);  
+*/
+
+		var n = 0;
+		while(n < 15){
+	        var incrementoY = n * (altura+margem);
+			var incrementoX = (n * -5);
+	        ctx.rect(x +incrementoX, y + incrementoY, largura, altura);   
+	        
+	        // ctx.rect(x - (n * -5), y + (n * (altura+margem)), largura, altura);   
+			n = n +1;
+		}
+
+
+
+
+        ctx.fill();
+        ctx.stroke();
+	}
+	
+	function executar(){
+		limpar();
+		atualizar();
+		exibir();
+		setTimeout( executar, 30 );
+	}
+
+	console.debug("largura do canvas = " + meuCanvasLegal.width);
+	executar();
+
+</script>
+
+</body>
+</html>
