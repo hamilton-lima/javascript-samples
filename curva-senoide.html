@@ -1,0 +1,60 @@
+<html>
+<body>
+<canvas width="640" height="480" id="meuCanvas" style="border-style:solid;border-width:3px;">
+</canvas>
+
+<script>
+	
+	var canvas = document.getElementById("meuCanvas");
+	var ctx = canvas.getContext("2d");
+
+	var margem = 10;
+	var x = margem;
+	var y = 0;
+	var altura = canvas.height - margem;
+	var metadeAltura = altura / 2;
+	
+	// altura maxima minima da curva
+	var amplitude = 0.6;
+	
+	// numero de voltas no circulo
+	var frequencia = 4;
+	
+	var passo = 0.5;
+	var comprimentoLinha = canvas.width - margem;
+
+	function desenhaCurva(){ 
+		ctx.beginPath();
+		ctx.rect(margem, margem, canvas.width - margem, canvas.height - margem);
+	
+		ctx.beginPath();
+		ctx.moveTo(margem,margem+metadeAltura);	
+		ctx.lineTo(comprimentoLinha,margem+metadeAltura);
+		ctx.stroke();
+	
+		ctx.beginPath();
+
+		// cada volta tem o equivalente a 2 * Math.PI
+		// 2*Math.PI / maximo => equivalencia entre trecho de X pretendido e 2*Math.PI
+		// 
+		var proporcao = (frequencia * 2 * Math.PI ) / (comprimentoLinha - margem);
+
+		// primeiro Y
+		y = metadeAltura + (metadeAltura * Math.sin(x * proporcao) * amplitude);
+
+		while( x <= comprimentoLinha ){
+			ctx.moveTo(x,y);
+			y = metadeAltura + (metadeAltura * Math.sin(x * proporcao) * amplitude);
+		
+			x = x + passo;
+			ctx.lineTo(x,y);
+		}
+	
+		ctx.stroke();
+	}
+	
+	desenhaCurva();
+
+</script>
+</body>
+</html>
