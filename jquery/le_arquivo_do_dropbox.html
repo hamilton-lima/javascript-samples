@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>draft</title>
+<script src="jquery.min.js"></script>
+</head>
+<body>
+<script>
+	var url = 'https://dl.dropbox.com/u/8032011/share/greetings.txt';
+
+	// 3. ok got the data
+	function afterReadFromDropBox(data) {
+		$('#result').html(data);
+	}
+	
+	// 2. ok the document is ready, lets grab some data from dropbox
+	function whenDocumentIsReady(){
+		$.get(url, afterReadFromDropBox );
+	}
+
+	// 1. when document is ready make the call 
+	$(document).ready( whenDocumentIsReady );
+	
+</script>
+<div id="result">
+</div>
+</body>
+</html>
