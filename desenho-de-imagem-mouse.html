@@ -1,0 +1,31 @@
+<html>
+<body>
+<canvas width="640" height="480" id="c1" />
+<script>
+	var c = document.getElementById("c1");
+	var ctx = c.getContext("2d");
+	var imagemPronta = false;
+	
+	ctx.fillRect(10,10,10,10);
+	
+	var m = new Image();
+	m.src = "mona.png";
+	m.onload = function(){
+		imagemPronta = true;
+	};
+
+	// c.addEventListener('mousemove', _mouseMove, false);
+	// c.addEventListener('mouseup', _mouseUp, false);
+	
+	c.addEventListener('mousedown', MeuMouseApertou, false);
+	
+	function MeuMouseApertou(laranja){
+		if( imagemPronta ){
+			ctx.drawImage( m, laranja.x, laranja.y);
+		}
+	}
+
+
+</script>
+</body>
+</html>
