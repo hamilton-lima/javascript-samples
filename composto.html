@@ -1,0 +1,23 @@
+<script>
+function Bola(){
+	this.x = 10;
+	this.y = 10;
+	this.mover = function(laranjinha,abobrinha){
+		this.x = laranjinha;
+		this.y = abobrinha;
+	}
+	
+	this.inicio = function(){
+		this.x = 0;
+		this.y = 0;
+	}
+}
+
+var teste = new Bola();
+console.debug(teste.x);
+teste.mover(20,30);
+console.debug(teste.x);
+
+teste.inicio();
+
+</script>
