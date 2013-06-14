@@ -1,0 +1,28 @@
+<html>
+<body>
+<canvas width="640" height="480" id="c1" />
+<script src="imagem-xy.js"></script>
+<script>
+	var c = document.getElementById("c1");
+	var ctx = c.getContext("2d");
+	
+	var lista = new Array();
+	var animada = new ImagemXY(ctx,"mona.png", 250, 10);
+
+	lista.push( new ImagemXY(ctx,"mona.png", 10, 10) );
+	lista.push( new ImagemXY(ctx,"mona.png", 100, 10) );	
+	lista.push( animada );
+
+	setTimeout( desenhar, 500 );
+
+	function desenhar(){
+		for(var i in lista){
+			lista[i].desenhar();		
+		}
+		animada.y ++;
+		setTimeout( desenhar, 50 );
+		
+	}
+</script>
+</body>
+</html>

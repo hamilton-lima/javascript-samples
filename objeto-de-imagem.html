@@ -1,32 +1,11 @@
 <html>
 <body>
 <canvas width="640" height="480" id="c1" />
+<script src="imagem.js"></script>
 <script>
 	var c = document.getElementById("c1");
 	var ctx = c.getContext("2d");
-	
-	function Imagem(c,src){
-		this.ctx = c;
 
-		this.img = new Image();
-		this.img.onload = function() {
-			// adiciona novo atributo no objeto Image
-			this.ready = true;
-		}
-
-		this.img.src = src;
-		
-		// o atributo .complete do objeto Image
-		// vai estar true mesmo que nao tenha carregado a imagem
-		// por isto usando o atributo .ready
-		// criado no evento onload()
-		this.desenhar = function(x,y){
-			if( this.img.ready ){
-				this.ctx.drawImage(this.img,x,y);
-			}
-		}
-	}
-	
 	var mona = new Imagem(ctx,"mona.png");
 	var fone = new Imagem(ctx,"fone.png");
 
@@ -36,7 +15,6 @@
 		mona.desenhar(e.x, e.y);		
 		fone.desenhar(e.x + mona.img.width, e.y);
 	}
-
 </script>
 </body>
 </html>
