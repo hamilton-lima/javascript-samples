@@ -1,0 +1,34 @@
+<html>
+<body>
+
+<script>
+	var coin = new Audio();
+	coin.src = "coin.mp3";
+	coin.load();
+	
+	var jump = new Audio();
+	jump.src = "jump.mp3";
+	jump.load();
+
+	var power = new Audio();
+	power.src = "powerup.mp3";
+	power.load();
+
+	function _keyup(e){
+
+		if (e.keyCode == 65) {
+			coin.play();
+		}
+		if (e.keyCode == 66) {
+			jump.play();
+		}
+		if (e.keyCode == 67) {
+			power.play();
+		}
+	}
+	
+	document.addEventListener("keyup", _keyup, false);
+
+</script>
+</body>
+</html>
