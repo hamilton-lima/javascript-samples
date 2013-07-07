@@ -1,0 +1,31 @@
+<html>
+<body>
+<canvas width="640" height="480" id="c1" />
+
+<script>
+	var c = document.getElementById("c1");
+	var ctx = c.getContext("2d");
+
+	function Imagem(n, x, y){
+		this.img = new Image();
+		this.img.src = "imagem"+ n + ".png"
+		this.x = x;
+		this.y = y;
+	}
+
+	var lista = new Array();
+	for(n=0; n < 3; n++){
+		lista[n] = new Imagem(n+1, (n * 120) + 20, 100);
+	}
+
+	function desenhar(){
+		for(n=0; n < 3; n++){
+			ctx.drawImage( lista[n].img, lista[n].x, lista[n].y );
+		}		
+	}
+
+	setTimeout( desenhar, 2000 );
+		
+</script>
+</body>
+</html>
