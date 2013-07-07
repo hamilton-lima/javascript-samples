@@ -1,0 +1,84 @@
+<html>
+<body>
+<canvas id="c" width="640" height="480">
+<script>
+	var canvas = document.getElementById("c");
+	var ctx = canvas.getContext("2d");
+	var x = -1;
+	var y = -1;
+	var n = 20;
+	
+	document.addEventListener('mousedown', mousedownHandler );
+
+	function mousedownHandler(e){
+		console.debug('mouse x=' + e.x + ' y=' + e.y );
+		
+		if( x < 0 ){
+			x = e.x;
+			y = e.y;
+		} else {
+			ctx.clearRect(0,0,640,480);
+			desenhaLinha(x,y,e.x,e.y, 'blue');
+			desenhaParalela(x,y,e.x,e.y, n, 'red');
+			desenhaParalela2(x,y,e.x,e.y, n+20, 'green'); 	 			
+			x = -1;
+		}
+	}
+		
+	function desenhaLinha(x1,y1,x2,y2,cor){
+		console.debug('linha='+ x1 +','+ y1+','+x2+','+y2);
+		ctx.strokeStyle = cor;
+		
+		ctx.beginPath();
+		ctx.moveTo(x1,y1);
+		ctx.lineTo(x2,y2);
+		ctx.stroke();		
+	}	
+	
+	function calculaDeclive(x1,y1,x2,y2){
+			return (y2 - y1) / (x2 - x1);		
+	}
+
+	function desenhaParalela(x1,y1,x2,y2,n,cor){
+		var c1 = y2 - y1;
+		var c2 = x2 - x1;
+		var h = Math.sqrt( (c1*c1)+(c2*c2));
+		var sin = c2 / h;
+		var alfa = Math.asin(sin);
+		var teta = Math.PI - Math.PI/2 - alfa;
+		console.debug('alfa=' + alfa + ' teta=' + teta );
+		
+	    var dx = n * Math.sin(teta);
+    	var dy = n * Math.cos(teta);			
+
+		console.debug('dx='+ dx + ' dy='+dy );
+		
+        if( y1 < y2 ){
+    		desenhaLinha(x1-dx,y1+dy,x2-dx,y2+dy,cor);
+	    	desenhaLinha(x1+dx,y1-dy,x2+dx,y2-dy,cor);
+        } else {
+    		desenhaLinha(x1-dx,y1-dy,x2-dx,y2-dy,cor);
+	    	desenhaLinha(x1+dx,y1+dy,x2+dx,y2+dy,cor);
+        }
+	}
+	
+	function desenhaParalela2(x1,y1,x2,y2,n,cor){
+		
+		var n2 = n * n;
+	    var dx = Math.sqrt(n2+n2) / 2;
+    	var dy = dx;		
+
+		console.debug('dx='+ dx + ' dy='+dy );
+		
+        if( y1 < y2 ){
+    		desenhaLinha(x1-dx,y1+dy,x2-dx,y2+dy,cor);
+	    	desenhaLinha(x1+dx,y1-dy,x2+dx,y2-dy,cor);
+        } else {
+    		desenhaLinha(x1-dx,y1-dy,x2-dx,y2-dy,cor);
+	    	desenhaLinha(x1+dx,y1+dy,x2+dx,y2+dy,cor);
+        }
+	}
+	
+</script>
+</body>
+</html>
