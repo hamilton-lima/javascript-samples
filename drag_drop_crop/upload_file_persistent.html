@@ -1,0 +1,282 @@
+<html>
+<head>
+<title>drag and drop and crop</title>
+<script src="jquery.min.js"></script>
+</head>
+<body>
+<style>
+
+#drop_zone {
+border: 2px dashed #bbb;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+border-radius: 5px;
+padding: 25px;
+text-align: center;
+font: 20pt bold 'Vollkorn';
+color: #bbb;
+}
+
+.box { width: 500px; float: left}
+</style>
+
+<div id="drop_zone">Drop files here</div>
+<output id="list"></output>
+
+<div class="box">
+	<canvas id="outputCanvas" width='480' height='640' />
+</div>
+
+<div id="resultImg" class="box">
+
+</div>
+
+<script>
+	var counter = 1;
+	var fs = null;
+
+function onError () { 
+	console.log ('Error : ', arguments); 
+}
+
+navigator.webkitPersistentStorage.requestQuota(1024*1024* 1024, function(grantedBytes) {
+  console.log ('requestQuota: ', arguments[0]);
+  requestFS(grantedBytes);
+}, errorHandler);
+
+
+function requestFS(grantedBytes) {
+  window.webkitRequestFileSystem(window.PERSISTENT, grantedBytes, function(filesystem) {
+    console.log ('fs: ', arguments); 
+    fs = filesystem;
+  }, errorHandler);
+}
+
+var readyToRock = false;
+
+// imagem temporaria
+var elephant = new Image();
+elephant.addEventListener("load", function(){ readyToRock = true; } );
+
+function handleFileSelect(evt) {
+	readyToRock = false;
+    evt.stopPropagation();
+    evt.preventDefault();
+
+    var files = evt.dataTransfer.files; // FileList object.
+	var reader = new FileReader();
+            
+    reader.onload = function (e) {
+    	elephant.src = e.target.result;
+    }
+            
+    reader.readAsDataURL(files[0]);
+
+    // files is a FileList of File objects. List some properties.
+    var output = [];
+    for (var i = 0, f; f = files[i]; i++) {
+      output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                  f.size, ' bytes, last modified: ',
+                  f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                  '</li>');
+    }
+    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+  }
+
+  function handleDragOver(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+  }
+
+  // Setup the dnd listeners.
+  var dropZone = document.getElementById('drop_zone');
+  dropZone.addEventListener('dragover', handleDragOver, false);
+  dropZone.addEventListener('drop', handleFileSelect, false);
+  
+// canvas.toBlob is not implemented in Chrome yet! So we have to build the blob ourselves.
+// Derived from http://mustachified.com/master.js
+// via http://lists.whatwg.org/pipermail/whatwg-whatwg.org/2011-April/031243.html
+// via https://bugs.webkit.org/show_bug.cgi?id=51652
+// via http://code.google.com/p/chromium/issues/detail?id=67587
+  
+function dataURItoBlob(dataURI, callback) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs
+    var byteString = atob(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    // write the ArrayBuffer to a blob, and you're done
+    var bb = new window.WebKitBlobBuilder();
+    bb.append(ab);
+    return bb.getBlob(mimeString);
+}  
+  
+// save the file in the persistent area and call callback with the url 
+// for the file
+//
+function saveFile(base64Data, callback){
+
+	if( fs != null ){
+
+		var fileName = 'imagem' + counter + '.png';
+		console.log('fileName =' + fileName);
+
+		fs.root.getFile(fileName, {create: true}, function(fileEntry) {
+			counter ++;
+		    fileEntry.createWriter(function(fileWriter) {
+      			
+      			fileWriter.onwriteend = function(e) {
+			        console.log('Write completed.');
+			        callback(fileEntry.toURL());
+	      		};
+
+      			fileWriter.onerror = function(e) {
+        			console.log('Write failed: ' + e.toString());
+      			};
+
+				var blob = new Blob([base64Data]);
+	       		fileWriter.write( blob );
+
+    		}, errorHandler);
+	  	}, errorHandler);
+	
+	} else {
+		console.log('file system not available');
+	}
+
+}
+
+
+
+  
+function errorHandler(e) {
+  var msg = '';
+  switch (e.code) {
+    case FileError.QUOTA_EXCEEDED_ERR:
+      msg = 'QUOTA_EXCEEDED_ERR';
+      break;
+    case FileError.NOT_FOUND_ERR:
+      msg = 'NOT_FOUND_ERR';
+      break;
+    case FileError.SECURITY_ERR:
+      msg = 'SECURITY_ERR';
+      break;
+    case FileError.INVALID_MODIFICATION_ERR:
+      msg = 'INVALID_MODIFICATION_ERR';
+      break;
+    case FileError.INVALID_STATE_ERR:
+      msg = 'INVALID_STATE_ERR';
+      break;
+    default:
+      msg = 'Unknown Error';
+      break;
+  };
+  
+  console.log(e);
+  console.log(msg);
+  
+}
+  
+  var out  = null;
+  var imgOut = null;
+  
+$(document).ready(function(){
+
+    out = document.getElementById("outputCanvas");
+    imgOut = out.getContext("2d");
+
+ 	out.addEventListener('mousemove', _mouseMove, false);
+	out.addEventListener('mouseup', _mouseUp, false);
+	out.addEventListener('mousedown', _mouseDown, false);
+
+	setTimeout( animateOut, 20 );
+ });
+
+function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+}
+      
+function _mouseMove(e){
+	if( readyToRock ){
+		x1 = getMousePos(out,e).x;
+		y1 = getMousePos(out,e).y;
+	}
+}
+
+function _mouseDown(e){
+	if( readyToRock ){
+		x = getMousePos(out,e).x;
+		y = getMousePos(out,e).y;
+		x1 = x;
+		y1 = y;
+	}	
+}
+
+// crop and save 
+function _mouseUp(e){
+
+	if( readyToRock ){
+		readyToRock = false;
+		var cropCanvas = document.createElement("canvas");
+		cropCanvas.width = (x1 - x )* 5;
+		cropCanvas.height = (y1 - y)* 5;
+	
+		var ctx = cropCanvas.getContext("2d");
+		ctx.drawImage(elephant, x*PROP, y*PROP, cropCanvas.width, cropCanvas.height, 
+			0, 0, cropCanvas.width, cropCanvas.height);
+
+		x=-1;
+		y=-1;
+		x1=-1;
+		y1=-1;
+		
+		var cropData = cropCanvas.toDataURL("image/png");
+		saveFile(cropData, function(fileURL){
+			console.log('cropped file saved : '+ fileURL );
+			readyToRock = true;
+		});
+
+    }
+
+}
+
+var PROP = 5;
+var x=-1;
+var y=-1;
+var x1=0;
+var y1=0;
+
+function animateOut(){
+		
+		if( imgOut){
+			// console.log('x=' + x + ' y=' + y +  ' x1=' + x1 + ' y1=' + y1 );
+			imgOut.clearRect(0, 0, out.width, out.height);
+			imgOut.drawImage(elephant, 0, 0, elephant.width/PROP, elephant.height/PROP);
+		
+			if( x >= 0 ){
+				imgOut.beginPath();
+				imgOut.rect(x,y,x1-x,y1-y);
+				imgOut.stroke();
+			}
+			setTimeout( animateOut, 20 );
+		}
+}
+  
+</script>
+
+</body>
+</html>
