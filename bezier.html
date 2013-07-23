@@ -1,0 +1,105 @@
+<html>
+<body>
+<p>Clique para marcar os três pontos e a curva ser calculada</p>
+<canvas id="c" width="640" height="480" style="border-style:dotted;">
+<script>
+	var canvas = document.getElementById("c");
+	var ctx = canvas.getContext("2d");
+	var rect = canvas.getBoundingClientRect();
+
+	// @see https://github.com/hamilton-lima/vaca5/blob/master/lib/nmscolor.js	
+	var NMSColor = {};
+	NMSColor.VINE_TOMATO = '#EF5026';
+	NMSColor.EGGPLANT = '#3C3755';
+	NMSColor.RED_PEPPER = '#C52728';
+	NMSColor.BROCCOLI = '#2C401B';
+	
+	NMSColor.CARROT = '#E75F25';
+	NMSColor.TANGERINE = '#FAA21D';	
+	
+	var points = [{x:450, y:150},{x:150, y:150},{x:150, y:450}];
+	var current = 2;
+	var color = NMSColor.CARROT;
+	draw();
+	
+	document.addEventListener('mousedown', mousedownHandler );
+
+	function mousedownHandler(e){
+		console.debug('mouse x=' + (e.x - rect.left)+ ' y=' + (e.y - rect.top) );
+		console.debug('current=' + current );
+		logPoints();
+		
+		if( current == 2 ){
+			move(points[0],points[1]);
+			move(points[1],points[2]);
+		}
+		
+		points[current].x = e.x - rect.left;
+		points[current].y = e.y - rect.top;
+		draw();		
+	}
+		
+	function move(p1,p2){
+		p1.x = p2.x;
+		p1.y = p2.y;
+	}	
+	
+	function logPoints(){
+		var r = '';
+		for(n in points){
+			r = r + ' ['+ n + '] x=' + points[n].x + ', y=' +points[n].y;
+		}
+		console.debug(r);
+	}	
+
+	function draw(){
+		logPoints();
+		ctx.clearRect(0,0,640,480);
+		ctx.strokeStyle = color;
+		
+		ctx.beginPath();
+		ctx.moveTo(points[0].x,points[0].y);
+		ctx.lineTo(points[1].x,points[1].y);		
+		ctx.lineTo(points[2].x,points[2].y);
+		ctx.stroke();
+
+		drawPoints();
+		drawBezier();
+	}	
+	
+	function drawPoints(){
+		for(n in points){
+	    	ctx.beginPath();
+      		ctx.arc(points[n].x, points[n].y, 5, 0, 2 * Math.PI, false);
+     		ctx.fillStyle = NMSColor.TANGERINE;
+			ctx.fill();
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = NMSColor.RED_PEPPER;
+			ctx.stroke();
+		}
+	}
+
+	function drawBezier(){
+    	ctx.beginPath();
+		ctx.strokeStyle = NMSColor.BROCCOLI;
+		ctx.moveTo(points[0].x,points[0].y);
+	
+		for(var n=0; n <= 1; n+= 0.1){
+	    	var p = interpolate(points[0],points[1],points[2],n);
+			ctx.lineTo(p.x, p.y);
+		}
+		ctx.stroke();
+	}
+
+	//@see http://blog.sklambert.com/finding-the-control-points-of-a-bezier-curve
+	//@see http://www.youtube.com/watch?v=YATikPP2q70
+	function interpolate(p1,p2,p3,n){
+		var p1p2 = { x: ((1-n)*p1.x)+(n*p2.x), y: ((1-n)*p1.y)+(n*p2.y) };
+		var p2p3 = { x: ((1-n)*p2.x)+(n*p3.x), y: ((1-n)*p2.y)+(n*p3.y) };
+		var p = { x: ((1-n)*p1p2.x)+(n*p2p3.x), y: ((1-n)*p1p2.y)+(n*p2p3.y) };
+		return p;
+	}
+
+</script>
+</body>
+</html>
