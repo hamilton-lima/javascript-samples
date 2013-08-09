@@ -1,0 +1,133 @@
+<html>
+<body>
+<p>Clique para marcar a origem e destino do projetil</p>
+<canvas id="c" width="640" height="480" style="border-style:dotted;">
+<script>
+	var canvas = document.getElementById("c");
+	var ctx = canvas.getContext("2d");
+	var rect = canvas.getBoundingClientRect();
+
+	// @see https://github.com/hamilton-lima/vaca5/blob/master/lib/nmscolor.js	
+	var NMSColor = {};
+	NMSColor.VINE_TOMATO = '#EF5026';
+	NMSColor.EGGPLANT = '#3C3755';
+	NMSColor.RED_PEPPER = '#C52728';
+	NMSColor.BROCCOLI = '#2C401B';
+	
+	NMSColor.CARROT = '#E75F25';
+	NMSColor.TANGERINE = '#FAA21D';	
+	
+	var points = [{x:50, y:50},{x:350, y:350}];
+	var color = NMSColor.CARROT;
+
+	var step = 0;
+	var angle = 0;
+	var speed = 250; // per second
+	
+	var now = timestamp();
+	var last = timestamp();
+	var dt = 0;
+	var bullet = {x:0, y:0};
+
+	document.addEventListener('mousedown', mousedownHandler );
+	
+	calculateAngle();
+	draw();	
+
+	
+	function timestamp() {
+    	return new Date().getTime();
+	};
+
+	function calculateAngle(){
+		p1 = points[0];
+		p2 = points[1];
+
+		var dx = p2.x - p1.x;
+		var dy = p2.y - p1.y;
+		
+		bullet = {x:p1.x, y:p1.y};
+		angle = Math.atan2(dx, dy);
+		console.debug('angulo = ' + angle );
+	}
+	
+	
+	function mousedownHandler(e){
+		console.debug('mouse x=' + (e.x - rect.left)+ ' y=' + (e.y - rect.top) );
+		logPoints();
+		
+		move(points[0],points[1]);
+		
+		points[1].x = e.x - rect.left;
+		points[1].y = e.y - rect.top;
+		draw();	
+		calculateAngle();	
+	}
+		
+	function move(p1,p2){
+		p1.x = p2.x;
+		p1.y = p2.y;
+	}	
+	
+	function logPoints(){
+		var r = '';
+		for(n in points){
+			r = r + ' ['+ n + '] x=' + points[n].x + ', y=' +points[n].y;
+		}
+		console.debug(r);
+	}	
+
+	function draw(){
+		logPoints();
+		ctx.clearRect(0,0,640,480);
+		ctx.strokeStyle = color;
+		
+		ctx.beginPath();
+		ctx.moveTo(points[0].x,points[0].y);
+		ctx.lineTo(points[1].x,points[1].y);		
+		ctx.stroke();
+
+		drawPoints();
+		drawBullet();
+
+	}	
+	
+	function drawPoints(){
+		for(n in points){
+	    	ctx.beginPath();
+      		ctx.arc(points[n].x, points[n].y, 5, 0, 2 * Math.PI, false);
+     		ctx.fillStyle = NMSColor.TANGERINE;
+			ctx.fill();
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = NMSColor.RED_PEPPER;
+			ctx.stroke();
+		}
+	}
+
+	function drawBullet(){
+	    now = timestamp();
+    	dt = (now - last) / 1000;
+
+		var shift = speed * dt;
+		
+		var dy = Math.cos(angle) * shift;
+		var dx = Math.sin(angle) * shift;
+
+		bullet.x += dx;
+		bullet.y += dy;
+		
+		ctx.beginPath();
+		ctx.arc(bullet.x, bullet.y, 5, 0, 2 * Math.PI, false);
+		ctx.fillStyle = NMSColor.BROCCOLI;
+		ctx.fill();
+		ctx.lineWidth = 2;
+		ctx.strokeStyle = NMSColor.VINE_TOMATO;
+		ctx.stroke();
+				
+		last = now;
+		setTimeout( drawBullet, 20 );
+	}
+
+</script>
+</body>
+</html>
