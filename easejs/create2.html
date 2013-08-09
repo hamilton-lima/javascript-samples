@@ -1,0 +1,37 @@
+<html>
+<body>
+
+<canvas id="demoCanvas" width="800" height="600">
+<script src="easeljs-0.6.1.min.js"></script>
+
+<script>
+    stage = new createjs.Stage("demoCanvas");
+	var w = 50;
+	var h = 100;
+
+    circle = new createjs.Shape();
+    circle.graphics.beginFill("red");
+    circle.graphics.drawRect(0, 0, w, h);
+
+    circle.x = circle.y = 150;
+    circle.regX = w /2;
+    circle.regY = h /2;    
+
+    stage.addChild(circle);
+    stage.update();
+    createjs.Ticker.addEventListener("tick", handleTick);
+
+    function handleTick() {
+        circle.x += 10;
+        circle.rotation += 10;
+        
+        if (circle.x > stage.canvas.width) { 
+        	circle.x = 0; 
+        }
+
+        stage.update();
+    }    
+</script>
+
+</body>
+</html>

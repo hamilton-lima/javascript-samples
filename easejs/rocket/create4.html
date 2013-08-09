@@ -1,0 +1,55 @@
+<html>
+<body>
+<a href="rocket-calculation.png">see here the rocket angle calculation</a><br>
+
+<canvas id="demoCanvas" width="800" height="600">
+<script src="easeljs-0.6.1.min.js"></script>
+
+<script>
+    stage = new createjs.Stage("demoCanvas");
+	var raio = 200;
+	var meioX = 400;
+	var meioY = 300;
+	   
+    var urano = new createjs.Bitmap("urano.png");
+    urano.x = meioX;
+    urano.y = meioY;
+    urano.regX = 40;
+    urano.regY = 30;
+    
+    var bitmap = new createjs.Bitmap("foguete.png");
+	var angle = 0;
+	var step = (Math.PI / 180) *-1 *2;
+	
+    bitmap.x = 100;
+    bitmap.y = 100;
+    
+    bitmap.regX = 25; 
+    bitmap.regY = 36; 
+    
+    stage.addChild(bitmap);
+    stage.addChild(urano);
+
+   createjs.Ticker.addEventListener("tick", handleTick);
+
+    function handleTick() {
+		angle += step; 
+		if( Math.abs(angle) > (2*Math.PI) ){
+			angle = 0;
+		}
+
+		dy = Math.sin(angle) * raio;
+		dx = Math.cos(angle) * raio;
+		
+		rocketAngle = Math.PI - (Math.PI/2) - angle;
+		rocketAngle = Math.PI - (Math.PI/2) - rocketAngle;
+		bitmap.rotation = rocketAngle * (180/ Math.PI);
+
+		bitmap.x = meioX + dx;
+		bitmap.y = meioY + dy;
+        stage.update();
+    }    
+</script>
+
+</body>
+</html>

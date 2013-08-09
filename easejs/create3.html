@@ -1,0 +1,27 @@
+<html>
+<body>
+
+<canvas id="demoCanvas" width="800" height="600">
+<script src="easeljs-0.6.1.min.js"></script>
+
+<script>
+    stage = new createjs.Stage("demoCanvas");
+	
+	var bitmap = new createjs.Bitmap("sapato.png");
+    bitmap.x = 100;
+    bitmap.y = 100;
+    bitmap.regX = 120; 
+    bitmap.regY = 120; 
+    
+    stage.addChild(bitmap);
+    stage.update();
+    createjs.Ticker.addEventListener("tick", handleTick);
+
+    function handleTick() {
+        bitmap.rotation += -10;
+        stage.update();
+    }    
+</script>
+
+</body>
+</html>
