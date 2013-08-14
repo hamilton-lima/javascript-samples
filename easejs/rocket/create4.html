@@ -43,9 +43,13 @@
 		dy = Math.sin(angle) * raio;
 		dx = Math.cos(angle) * raio;
 		
-		rocketAngle = Math.PI - (Math.PI/2) - angle;
-		rocketAngle = Math.PI - (Math.PI/2) - rocketAngle;
-		bitmap.rotation = rocketAngle * (180/ Math.PI);
+		// makes no sense !! :) the result is the same angle lol.
+		// good catch Erick Passos.
+		// rocketAngle = Math.PI - (Math.PI/2) - angle;
+		// rocketAngle = Math.PI - (Math.PI/2) - rocketAngle;
+		// bitmap.rotation = rocketAngle * (180/ Math.PI);
+		
+		bitmap.rotation = angle * (180/ Math.PI);
 
 		bitmap.x = meioX + dx;
 		bitmap.y = meioY + dy;
