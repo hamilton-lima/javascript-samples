@@ -7,9 +7,10 @@
 
 <script>
     stage = new createjs.Stage("demoCanvas");
-	var raio = 200;
+	var raio = 100;
 	var meioX = 400;
 	var meioY = 300;
+	var speed = -8;
 	   
     var urano = new createjs.Bitmap("urano.png");
     urano.x = meioX;
@@ -17,9 +18,10 @@
     urano.regX = 40;
     urano.regY = 30;
     
+    
     var bitmap = new createjs.Bitmap("foguete.png");
 	var angle = 0;
-	var step = (Math.PI / 180) *-1 *2;
+	var step = (Math.PI / 180) * speed;
 	
     bitmap.x = 100;
     bitmap.y = 100;
