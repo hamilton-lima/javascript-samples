@@ -1,0 +1,22 @@
+<html>
+<body>
+<canvas id="harlem" width="800" height="600">
+<script src="easeljs-0.6.1.min.js"></script>
+<script src="harlem1.js"></script>
+
+<script>
+    stage = new createjs.Stage("harlem");
+    stage.addChild(harlem1);
+    harlem1.x = 100;
+    harlem1.y = 150;
+
+   createjs.Ticker.addEventListener("tick", handleTick);
+
+    function handleTick() {
+        stage.update();
+    }    
+
+</script>
+
+</body>
+</html>
