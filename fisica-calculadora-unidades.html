@@ -1,0 +1,93 @@
+<html>
+<head>
+<style>
+body, td, select, button, option, select, input {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 20px;
+}
+</style>
+<script>
+	function calcular(){
+		console.log('calcular');
+		var entrada = document.getElementById("entrada");
+		var e1 = Number(entrada.value);
+		
+		var tipo1 = document.getElementById("tipo1");
+		var t1 = tipo1.options[tipo1.selectedIndex].value;
+
+		var tipo2 = document.getElementById("tipo2");
+		var t2 = tipo2.options[tipo2.selectedIndex].value;
+		
+		var conta = executar(e1,t1,t2);
+
+		var saida = document.getElementById("saida");
+		saida.innerHTML = "resulta : " + conta;
+
+	}
+	
+	function executar(e1,t1,t2){
+	
+		if( t1 == t2 ){
+			return e1;
+		}
+	
+		if( t1 == 'gnomo' ){
+
+			if( t2 == 'humano' ){
+				return e1 * 1.2;
+			}
+		
+			if( t2 == 'orc' ){
+				return e1 * 2;
+			}
+		
+		}
+	
+	}
+
+</script>
+
+</head>
+<body>
+<h2>Calculadora</h2>
+<hr>
+<form>
+	<table>
+		<tr>
+			<td>Valor de entrada</td>
+			<td><input type="text" id="entrada"></td>
+		</tr>
+		<tr>
+			<td>Tipo 1</td>
+			<td>
+				<select id="tipo1">
+					<option value="gnomo">Gnomo</option>
+				</select>
+			</td>
+		</tr>
+
+		<tr>
+			<td>Tipo 2</td>
+			<td>
+				<select id="tipo2">
+					<option value="gnomo">Gnomo</option>
+					<option value="humano">Humano</option>
+					<option value="orc">Orc</option>
+				</select>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<button type="button" onclick="calcular();">
+					Calcular
+				</button>
+			</td>
+			<td><div id="saida"></td>
+		</tr>
+	</table>
+
+</form>
+
+</body>
+</html>
