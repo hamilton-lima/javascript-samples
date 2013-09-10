@@ -1,0 +1,103 @@
+<html>
+<body>
+<canvas id="demoCanvas" width="640" height="480">
+<script src="easeljs-0.6.1.min.js"></script>
+
+<script>
+	var direcao1 = 10;
+	var direcao2 = -10;
+	var margem = 50;
+	var raio = 30;	
+	var raiop = 35;
+	var velocidade = 20;
+
+    stage = new createjs.Stage("demoCanvas");
+
+    personagem = new createjs.Shape();
+    personagem.graphics.beginFill("blue");
+    personagem.graphics.drawCircle(0, 0, raiop);
+	personagem.y = stage.canvas.height / 2;
+	personagem.x = 0;
+
+    circle1 = new createjs.Shape();
+    circle1.graphics.beginFill("red");
+    circle1.graphics.drawCircle(0, 0, raio);
+	circle1.y = margem;
+	circle1.x = 250;
+
+    circle2 = new createjs.Shape();
+    circle2.graphics.beginFill("green");
+    circle2.graphics.drawCircle(0, 0, raio);
+	circle2.y = stage.canvas.height - margem;
+	circle2.x = 350;
+ 
+    stage.addChild(circle1);
+    stage.addChild(circle2);    
+    stage.addChild(personagem);
+    
+    stage.update();
+    
+    createjs.Ticker.addEventListener("tick", handleTick);
+
+    function handleTick() {
+        circle1.y += direcao1;       
+        circle2.y += direcao2;
+        
+        if (circle1.y < margem || circle1.y > (stage.canvas.height - margem) )  { 
+        	direcao1 = direcao1 * -1; 
+        }
+
+        if (circle2.y < margem || circle2.y > (stage.canvas.height - margem) )  { 
+        	direcao2 = direcao2 * -1; 
+        }
+        personagem.graphics.clear().beginFill("blue").drawCircle(0, 0, raiop);
+        
+        var d1 = distancia(personagem.x, personagem.y, circle1.x, circle1.y);
+        if( d1 < (raio+raiop) ){
+            personagem.graphics.clear().beginFill("red").drawCircle(0, 0, raiop);
+        } 
+        
+        var d2 = distancia(personagem.x, personagem.y, circle2.x, circle2.y);
+        if( d2 < (raio+raiop) ){
+            personagem.graphics.clear().beginFill("green").drawCircle(0, 0, raiop);
+        }
+
+        stage.update();
+    }  
+    
+    function teclado(e) {
+
+		// direita
+		if( e.keyCode == 39 ){
+			personagem.x += velocidade;
+		}
+
+		// esquerda
+		if( e.keyCode == 37 ){
+			personagem.x -= velocidade;
+		}
+
+		// cima
+		if( e.keyCode == 38 ){
+			personagem.y -= velocidade;
+		}
+
+		// baixo
+		if( e.keyCode == 40 ){
+			personagem.y += velocidade;
+		}
+
+	}
+
+	window.addEventListener('keydown', teclado, true );
+      
+    function distancia(x,y,x1,y1){
+     	var c1 = x1 - x;
+     	var c2 = y1 - y;
+     	var d = Math.sqrt( (c1*c1) + (c2*c2) );
+     	return d;
+    } 
+</script>
+
+</body>
+</html>
