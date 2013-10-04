@@ -1,0 +1,89 @@
+<html>
+<body>
+<canvas id="tiledCanvas" width="4800" height="1600">
+<script src="easeljs-0.6.1.min.js"></script>
+
+<script>
+var xhr = new XMLHttpRequest();
+xhr.onreadystatechange = function() {
+	
+	if (xhr.readyState == 4) {
+		console.debug(xhr.readyState + "" + xhr.responseText);
+		var data = JSON.parse(xhr.responseText);
+		console.debug(data);
+		buildMap(data);
+	}
+};
+
+var spriteSheet;
+var map;
+
+function buildMap(p){
+
+	map = p;
+	console.debug('tilewidth='+ map.tilesets[0].tilewidth);
+	console.debug('tileheight='+ map.tilesets[0].tileheight);
+	
+	var spritesheetData = { 
+		images: [map.tilesets[0].image],
+		frames: {
+			width:map.tilesets[0].tilewidth, 
+			height:map.tilesets[0].tileheight
+		}
+	};
+	
+	spriteSheet = new createjs.SpriteSheet(spritesheetData);
+	spriteSheet.addEventListener("complete", processTiles);
+
+}
+
+function processTiles(){
+	for(n in map.layers){
+		console.debug( n + ' layer.type : ' + map.layers[n].type );
+		if( map.layers[n].type == 'tilelayer' ){
+			addTiles(map, n);
+		}
+	}
+}
+
+function addTiles(map, n){
+
+	stage = new createjs.Stage("tiledCanvas");
+
+	var x = 0;
+	var y = 0;
+	var counter = 0;
+	
+	stage.update();
+
+	for(i in map.layers[n].data){
+		// identifica imagem baseada no tile set
+		var tid = map.layers[n].data[i];
+
+		var tile = new createjs.BitmapAnimation(spriteSheet);
+		tile.gotoAndStop(tid -1);
+		tile.x = x;
+		tile.y = y;	
+		stage.addChild(tile);
+		console.debug(tile);
+		
+		x += map.tilewidth;
+		
+		counter ++;
+		if( counter >= map.layers[n].width ){
+			counter = 0;
+			y = y + map.tileheight;
+			x = 0;
+		}
+	}
+	
+	stage.update();
+
+}
+
+xhr.open("GET", "level1.json", true);
+xhr.send();
+
+</script>
+</body>
+</html>

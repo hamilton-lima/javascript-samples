@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="20" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="chão" tilewidth="32" tileheight="32">
+  <image source="../../Desktop/Tilesets/chão.png" width="384" height="192"/>
+ </tileset>
+ <tileset firstgid="73" name="cores" tilewidth="32" tileheight="32">
+  <image source="../../Desktop/Tilesets/cores.png" width="128" height="32"/>
+ </tileset>
+ <tileset firstgid="77" name="littleshrooms_0" tilewidth="32" tileheight="32">
+  <image source="../../Desktop/Tilesets/littleshrooms_0.png" width="32" height="40"/>
+ </tileset>
+ <tileset firstgid="78" name="char" tilewidth="32" tileheight="32">
+  <image source="../../Desktop/Tilesets/char.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="79" name="qubodup-bush_0" tilewidth="32" tileheight="32">
+  <image source="../../Desktop/Tilesets/qubodup-bush_0.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="80" name="chão" tilewidth="32" tileheight="32">
+  <image source="../../Desktop/Tilesets/chão.png" width="384" height="192"/>
+ </tileset>
+ <tileset firstgid="152" name="tipos de chao" tilewidth="32" tileheight="32">
+  <image source="../../Desktop/Tilesets/tipos de chao.jpg" width="512" height="480"/>
+ </tileset>
+ <layer name="chao" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJy9lbFOxDAQRI3j0xWRklSu4IfoKSNBSVLz/5zFjniZ852ggGLkO2e9szNe288ppVNguKDE2JADAzD/EoPl1fzpDt7/AC/Bf4+3oQakvdW63NGk7zVGosXsiN9+UAO9b+Ojcc2WvwQ4NwdvAe+pw11v1JOD17mE8YLJfBCX9M7B6/2w3NDNnpgCWpPxewKnaptT3+chHfenxnrnnjrzOeZKOvavoDr29N0TW3jDnqlWe0/3Cj7vg8HWy5cd+yK98kRxrLXhHBDHGvM5Hf3mXk0dXvXihjj3hbWcsV7cJeYz8i8dTs17P7PX3R9q0VmS1nPk4dl2PtbS49V/xvOeLOAULz3Ntn4Gp9Y774h49zen4321Wpz3gfqakFfeV9Rb8F/nkjlX6GQ91N3Gp4cvsG+kt9r+lnSMGzt55bO/VX6XirdCt/SKl/epnwfVX4ybHvo7kfG9Rv3sK/K61wU5/JypliVd72Wx7xX5/X6WzhWgz9SW09EXf++4Z7pvl8i1Y93rBR//hLd03S+9e87fmZ5Wau7lUo8Tn/VqOsc=
+  </data>
+ </layer>
+ <layer name="barreira azul" width="30" height="20" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFQwXIMDIwyDLS314doJ26eOwdrO4aBaSD0bgcBdQE2NITPdIYtvQ0msZoC0bLDkwAAOfKA4U=
+  </data>
+ </layer>
+ <layer name="barreira vermelha" width="30" height="20" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFyECGkYFBlpH+9uoA7dSlg73D3X9DAYzGAeVgNAxHw2AU0BaMpi/KAQBQXwOF
+  </data>
+ </layer>
+ <layer name="muro" width="30" height="20" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJybzcDAMHuAML3BqL2j9o7aO2rvqL2j9o7aO/LsHQgMAAOfOiE=
+  </data>
+ </layer>
+ <objectgroup color="#ffffff" name="colisao" width="30" height="20" visible="0" opacity="0.89">
+  <object name="colisor" x="640" y="255" width="62" height="63">
+   <properties>
+    <property name="type" value="colisor"/>
+   </properties>
+  </object>
+  <object name="colisor" x="544" y="97" width="62" height="63">
+   <properties>
+    <property name="type" value="colisor"/>
+   </properties>
+  </object>
+  <object name="colisor" x="800" y="127" width="62" height="63">
+   <properties>
+    <property name="type" value="colisor"/>
+   </properties>
+  </object>
+  <object name="colisor" x="577" y="414" width="62" height="63">
+   <properties>
+    <property name="type" value="colisor"/>
+   </properties>
+  </object>
+  <object name="colisor" x="739" y="417" width="62" height="63">
+   <properties>
+    <property name="type" value="colisor"/>
+   </properties>
+  </object>
+  <object name="colisor" x="352" y="225" width="62" height="63">
+   <properties>
+    <property name="type" value="colisor"/>
+   </properties>
+  </object>
+  <object name="colisor" x="257" y="64" width="62" height="63">
+   <properties>
+    <property name="type" value="colisor"/>
+   </properties>
+  </object>
+  <object name="colisor" x="129" y="126" width="62" height="63">
+   <properties>
+    <property name="type" value="colisor"/>
+   </properties>
+  </object>
+  <object name="colisor" x="65" y="321" width="62" height="63">
+   <properties>
+    <property name="type" value="colisor"/>
+   </properties>
+  </object>
+  <object name="colisor" x="225" y="383" width="62" height="63">
+   <properties>
+    <property name="type" value="colisor"/>
+   </properties>
+  </object>
+  <object name="colisor" x="673" y="544" width="62" height="63">
+   <properties>
+    <property name="type" value="colisor"/>
+   </properties>
+  </object>
+  <object name="colisor" x="289" y="546" width="62" height="63">
+   <properties>
+    <property name="type" value="colisor"/>
+   </properties>
+  </object>
+  <object x="0" y="608" width="960" height="32"/>
+  <object x="0" y="-3" width="960" height="32"/>
+  <object x="-1" y="31" width="33" height="580"/>
+  <object x="929" y="27" width="33" height="580"/>
+  <object x="2060" y="468">
+   <ellipse/>
+  </object>
+ </objectgroup>
+</map>

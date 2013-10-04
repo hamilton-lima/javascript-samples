@@ -1,0 +1,21 @@
+<html>
+<body>
+oi
+
+<script>
+
+var xhr = new XMLHttpRequest();
+xhr.onreadystatechange = function() {
+	if (xhr.readyState == 4) {
+		console.debug(xhr.responseText);
+		var data = JSON.parse(xhr.responseText);
+		console.debug(data);
+	}
+};
+
+xhr.open("GET", "data1.json", true);
+xhr.send();
+
+</script>
+</body>
+</html>

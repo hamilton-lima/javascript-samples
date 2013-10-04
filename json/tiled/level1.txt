@@ -1,0 +1,92 @@
+
+- como adicionar um evento de colisao -- bitmap .hitTest(x,y)
+	este site sugere uma forma legal de testar a colisao
+	sera que tem como injetar no codigo do Ease uma funcao intersect ? 
+	http://indiegamr.com/retro-style-plattform-runner-game-for-mobile-with-easeljs-part-2/
+	
+	-- talvez com heranca ... 
+	https://github.com/CreateJS/EaselJS/tree/master/tutorials/Inheritance
+	
+	-- melhor criar uma funcao de colisao e uma lista de colisores :)
+	
+	fazer hit test com cada canto dos quadrados
+	 var rect = new createjs.Rectangle(0, 0, 100, 100);
+	
+- como mover o personagem e impedir que passe do chao
+	hitTest
+	
+- como fazer viewport
+	usar container deslocado
+	
+	
+var KEYCODE_SPACE = 32; 	//usefull keycode
+var KEYCODE_UP = 38; 	//usefull keycode
+var KEYCODE_LEFT = 37; 	//usefull keycode
+var KEYCODE_RIGHT = 39; 	//usefull keycode
+var KEYCODE_W = 87; 		//usefull keycode
+var KEYCODE_A = 65; 		//usefull keycode
+var KEYCODE_D = 68; 		//usefull keycode
+
+	document.onkeydown = handleKeyDown;
+	document.onkeyup = handleKeyUp;
+
+
+function handleKeyDown(e) {
+    //cross browser issues exist
+    if (!e) { var e = window.event; }
+    switch (e.keyCode) {
+        case KEYCODE_A: ;
+        case KEYCODE_LEFT:
+            // We're launching the walk_left animation
+            if (Hero.alive && Hero.isInIdleMode) {
+                Hero.gotoAndPlay("walk");
+                Hero.direction = -1;
+                Hero.isInIdleMode = false;
+            }
+            break;
+        case KEYCODE_D: ;
+        case KEYCODE_RIGHT:
+            // We're launching the walk_right animation
+            if (Hero.alive && Hero.isInIdleMode) {
+                Hero.gotoAndPlay("walk_h");
+                Hero.direction = 1;
+                Hero.isInIdleMode = false;
+            }
+            break;
+    }
+}
+
+function handleKeyUp(e) {
+    //cross browser issues exist
+    if (!e) { var e = window.event; }
+    switch (e.keyCode) {
+        case KEYCODE_A: ;
+        case KEYCODE_LEFT: ;  
+        case KEYCODE_D: ;
+        case KEYCODE_RIGHT:
+            if (Hero.alive) {
+                Hero.isInIdleMode = true;
+                Hero.gotoAndPlay("idle");
+            }
+            break;
+    }
+}
+
+
+
+		
+		/* 
+		var tile = new createjs.Shape();
+		if( tid > 0 ){
+	    	tile.graphics.beginFill("blue");
+		} else {
+	    	tile.graphics.beginFill("gray");
+		}
+		tile.graphics.drawRect(0, 0, map.tilewidth,  map.tileheight);
+		*/
+
+
+
+
+	
+	
