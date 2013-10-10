@@ -6,15 +6,13 @@
 
 <script>
 
-console.debug(data);
-buildMap(data);
+console.debug(map);
+buildMap();
 
 var spriteSheet;
-var map;
 
-function buildMap(p){
+function buildMap(){
 
-	map = p;
 	console.debug('tilewidth='+ map.tilesets[0].tilewidth);
 	console.debug('tileheight='+ map.tilesets[0].tileheight);
 	
@@ -23,7 +21,7 @@ function buildMap(p){
 		frames: {
 			width:map.tilesets[0].tilewidth, 
 			height:map.tilesets[0].tileheight
-		}
+		}	
 	};
 	
 	spriteSheet = new createjs.SpriteSheet(spritesheetData);
@@ -33,14 +31,14 @@ function buildMap(p){
 
 function processTiles(){
 	for(n in map.layers){
-		console.debug( n + ' layer.type : ' + map.layers[n].type );
+		console.debug( n + ' >> layer.type : ' + map.layers[n].type );
 		if( map.layers[n].type == 'tilelayer' ){
-			addTiles(map, n);
+			addTiles(n);
 		}
 	}
 }
 
-function addTiles(map, n){
+function addTiles(n){
 
 	stage = new createjs.Stage("tiledCanvas");
 
@@ -59,7 +57,7 @@ function addTiles(map, n){
 		tile.x = x;
 		tile.y = y;	
 		stage.addChild(tile);
-		console.debug(tile);
+		// console.debug(tile);
 		
 		x += map.tilewidth;
 		
@@ -72,11 +70,7 @@ function addTiles(map, n){
 	}
 	
 	stage.update();
-
 }
-
-xhr.open("GET", "level1.json", true);
-xhr.send();
 
 </script>
 </body>

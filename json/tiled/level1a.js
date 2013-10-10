@@ -1,4 +1,4 @@
-var data = { "backgroundcolor":"#ffffff",
+var map = { "backgroundcolor":"#ffffff",
  "height":10,
  "layers":[
         {
