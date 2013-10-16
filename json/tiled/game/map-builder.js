@@ -6,11 +6,16 @@ var spritesheetData = {
 	}	
 };
 
-spriteSheet = new createjs.SpriteSheet(spritesheetData);
-spriteSheet.addEventListener("complete", buildMap );
+function initMap(){
+	console.debug('initMap');
 
+	spriteSheet = new createjs.SpriteSheet(spritesheetData);
+	spriteSheet.addEventListener("complete", buildMap );
+}
 
 function buildMap(){
+	console.debug('buildMap');
+	
 	for(n in map.layers){
 		console.debug( n + ' >> layer.type : ' + map.layers[n].type );
 		if( map.layers[n].type == 'tilelayer' ){
@@ -18,7 +23,7 @@ function buildMap(){
 		}
 	}
 	
-	loading.map = true;
+	initChar();
 }
 
 function addTiles(n){

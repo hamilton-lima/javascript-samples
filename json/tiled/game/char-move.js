@@ -1,7 +1,3 @@
-
-	window.addEventListener('keydown', teclado, true );
-	window.addEventListener('keyup', tecladoStop, true );
-
     function tecladoStop(e) {
 		p1.vx = 0;
 		p1.vy = 0;
@@ -42,7 +38,7 @@
 		c1 = Math.abs( (b.x+(b.width/2)) - (a.x+(a.width/2)) );
 		c2 = Math.abs( (b.y+(b.height/2)) - (a.y+(a.height/2)) );
 
-		d1 = (b.width/2) + (a.width/2);
+		d1 = (b.width/2) + (a.width/2);	
 		d2 = (b.height/2) + (a.height/2);
 		
 		if( (c1 < d1) && (c2 < d2) ){

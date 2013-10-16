@@ -1,3 +1,4 @@
+
 // carrega o sprite sheet do personagem
 var p1spritesheetData = { 
 	images: [p1.name],
@@ -11,19 +12,31 @@ var p1spritesheetData = {
 		run:{ frames:[7,8,9,10,11,7]}
 	}	
 };
-	
-p1.spritesheet = new createjs.SpriteSheet(p1spritesheetData);
-p1.spritesheet.addEventListener("complete", buildChar);
+
+function initChar(){	
+	console.debug('initChar');
+
+	p1.spritesheet = new createjs.SpriteSheet(p1spritesheetData);
+	p1.spritesheet.addEventListener("complete", buildChar);
+}
 
 // encontra posicao inicial do personagem no a partir do objeto do tipo 'start'
 //
 function buildChar(){
+	console.debug('buildChar');
 
 	p1.tile = new createjs.BitmapAnimation(p1.spritesheet);
 	p1.tile.gotoAndStop("idle");
 	main.addChild(p1.tile);
 
+	setStartPosition();
+	init();
+}
+
+function setStartPosition(){
+
 	var found = false;
+	
 	for(n in map.layers){
 		console.debug( n + ' >> layer.name : ' + map.layers[n].name );
 		if( map.layers[n].type == 'objectgroup' ){
@@ -52,7 +65,5 @@ function buildChar(){
 			break;
 		}
 	}
-	
-	loading.character = true;
-	
+
 }

@@ -5,6 +5,7 @@
 
 <script>
 	var spriteSheet;
+
 	// @todo checar escadas
 	var config = {
 		 horizontal: 360,
@@ -26,11 +27,6 @@
 	
 	stage.addChild(main);
 	
-	var loading = { 
-		map:false, character: false, test: true,
-		ready: function(){ return this.map && this.character && this.test; }
-	};
-	
 </script>
 
 <script src="map.js"></script>
@@ -39,19 +35,29 @@
 <script src="char-move.js"></script>
 
 <script>
-	var ticker = createjs.Ticker.addEventListener("tick", handleTick);
-	//createjs.Ticker.setFPS(60);
+
+	var ticker = null;
+	
+	// inicia chamadas em sequencia : map -> char -> init
+	initMap();
+
+	function init(){
+		console.debug('init');
+
+		ticker = createjs.Ticker.addEventListener("tick", handleTick);
+	
+		window.addEventListener('keydown', teclado, true );
+		window.addEventListener('keyup', tecladoStop, true );
+	}
+
 	
     function handleTick(e) {
-    	if( loading.ready() ){
-			e.delta = e.delta / 1000;
-		
-			checkGround(e);
-			checkWall(e);
-			stage.update(e);
-    	}
+		e.delta = e.delta / 1000;
+	
+		checkGround(e);
+		checkWall(e);
+		stage.update(e);
     }   
-
     
 </script>
 </body>
