@@ -23,6 +23,7 @@ function buildMap(){
 		}
 	}
 	
+	console.debug('--- buildMap');	
 	initChar();
 }
 

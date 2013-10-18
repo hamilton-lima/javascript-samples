@@ -1,0 +1,1 @@
+/opt/ImageMagick/bin/montage p1_walk01.png	p1_walk02.png	p1_walk03.png	p1_walk04.png	p1_walk05.png	p1_walk06.png p1_walk07.png	p1_walk08.png	p1_walk09.png	p1_walk10.png jump.png -tile 11x1 -geometry 72x97+0+0 -background transparent p1_walk.png

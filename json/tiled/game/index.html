@@ -1,6 +1,6 @@
 <html>
-<body>
-<canvas id="tiledCanvas" width="800" height="700">
+<body onload="start()">
+<canvas id="tiledCanvas" width="800" height="600">
 <script src="easeljs-0.6.1.min.js"></script>
 
 <script>
@@ -10,16 +10,17 @@
 	var config = {
 		 horizontal: 360,
 		 vertical: 200,
-		 gravity: 800,
+		 gravity: 700,
 		 jump: 1600
 	};
 
 	var stage = new createjs.Stage("tiledCanvas");
 	var main = new createjs.Container();
 
-	var p1 = {name:'p1_spritesheet.png',
-		width:69, height:96, vx: 0, vy: 0,
+	var p1 = {name:'p1_walk.png',
+		width: 72, height: 97, vx: 0, vy: 0,
 		gravity: config.gravity,
+		startX:0, startY:0,
 		jump_energy: 0,
 		onStair: false,
 		onGround: false,
@@ -38,12 +39,15 @@
 
 	var ticker = null;
 	
-	// inicia chamadas em sequencia : map -> char -> init
-	initMap();
+	function start(){
+		// inicia chamadas em sequencia : map -> char -> init
+		initMap();
+	}
 
 	function init(){
 		console.debug('init');
 
+		createjs.Ticker.setFPS(60);
 		ticker = createjs.Ticker.addEventListener("tick", handleTick);
 	
 		window.addEventListener('keydown', teclado, true );
@@ -56,6 +60,14 @@
 	
 		checkGround(e);
 		checkWall(e);
+		
+		// caiu fora do mapa !
+		if( p1.tile.y > stage.canvas.height ){
+			p1.tile.x = p1.startX;
+			p1.tile.y = p1.startY;
+			main.x = p1.tile.x;
+		}
+		
 		stage.update(e);
     }   
     
