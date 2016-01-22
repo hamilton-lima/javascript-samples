@@ -1,7 +1,9 @@
 <html>
 <body>
 <p>circle packing</p>
+<div id="report">...</div>
 <canvas id="c" width="640" height="480" style="border-style:dotted;">
+
 <script>
 	var canvas = document.getElementById("c");
 	var ctx = canvas.getContext("2d");
@@ -20,6 +22,9 @@
 	var center = {x:rect.width/2, y:rect.height/2};
 	var radius = ( rect.height * 0.95 ) / 2;
 
+	// to generate string about the list of cables
+	var ductWidth = 4;
+
 	if( rect.width < rect.height ){
 		radius = ( rect.width * 0.95 ) / 2;		
 	}
@@ -31,7 +36,43 @@
 
 	var fillColor = "#FFFFFF";
 
-	var circles = addRandomCircles(30);
+	var circleSetupSmallerFirst = {
+		0:{radius: 0.025, amount: 15},
+		1:{radius: 0.125, amount: 10},
+		2:{radius: 0.25, amount: 2},
+		3:{radius: 0.5, amount: 1},
+	};
+
+	var circleSetupMixed = {
+		0:{radius: 0.5, amount: 1},
+		1:{radius: 0.025, amount: 5},
+		2:{radius: 0.125, amount: 10},
+		3:{radius: 0.025, amount: 5},
+		4:{radius: 0.25, amount: 2},
+		5:{radius: 0.025, amount: 5},
+	};
+
+	var circleSetup2Big = {
+		0:{radius: 0.5, amount: 2}
+	};
+
+	var circleSetupBiggestFirstThenASC = {
+		0:{radius: 0.5, amount: 1},
+		1:{radius: 0.025, amount: 15},
+		2:{radius: 0.125, amount: 10},
+		3:{radius: 0.25, amount: 2}
+	};
+
+//
+	var circleSetup2BigMix = {
+		0:{radius: 0.5, amount: 1},
+		1:{radius: 0.125, amount: 6},
+		2:{radius: 0.025, amount: 10},
+		3:{radius: 0.5, amount: 1}		
+	};
+
+	// var circles = addCircles(circleSetup2BigMix);
+	var circles = addRandomCircles(40);
 
 	console.debug("radius",  radius );
 	console.debug("center",  center );
@@ -64,18 +105,26 @@
 
 			// console.debug("circle", circles[currentCircle]);
 
-			// move 2% each step
-			var amount = circles[currentCircle].radius * 0.02;
+			// move 
+			var amountV = circles[currentCircle].radius * 0.01;
+			var amountH = circles[currentCircle].radius * 0.01;
+
+			var sideRetries = 0;
+			var maxSideRetries = 15;
+			var sideRetryDirection = 1;
 
 			// first goes down 
-			var target = { x: circles[currentCircle].x, y: circles[currentCircle].y +amount };
+			var target = { x: circles[currentCircle].x, y: circles[currentCircle].y +amountV };
 
 			//&& (count ++ < countMax) 
 			while( canMove(circles[currentCircle], target) ){
 				circles[currentCircle].x = target.x;
 				circles[currentCircle].y = target.y;
-				target = { x: circles[currentCircle].x, y: circles[currentCircle].y +amount };			
+				target = { x: circles[currentCircle].x, y: circles[currentCircle].y +amountV };			
 			}
+
+			// move up 3 steps
+			// circles[currentCircle].y = circles[currentCircle].y - (amountV * 3);
 
 			// remove this !!
 			// count = 0;
@@ -93,19 +142,29 @@
 
 				moved = false;
 
-				// tries to go and left or right depending on direction
-				var target = {x:circles[currentCircle].x +(amount *direction.x), y: circles[currentCircle].y };
-				if( canMove(circles[currentCircle], target) ){
-					circles[currentCircle].x = target.x;
-					circles[currentCircle].y = target.y;
-					moved = true;
+				sideRetries = 0;
+				while( sideRetries ++ < maxSideRetries){
+
+					sideRetryDirection = sideRetryDirection *-1;
+					var sideAmount = amountH * sideRetryDirection ; // * sideRetries
+
+					// tries to go and left or right depending on direction
+					var target = {x:circles[currentCircle].x +(sideAmount * direction.x * sideRetryDirection), y: circles[currentCircle].y };
+					if( canMove(circles[currentCircle], target) ){
+						circles[currentCircle].x = target.x;
+						circles[currentCircle].y = target.y;
+						moved = true;
+					} 
+
 				}
 
+
 				// tries to go down
-				var target = {x:circles[currentCircle].x, y: circles[currentCircle].y +(amount * direction.y) };
-				if( canMove(circles[currentCircle], target) ){
+				var target = {x:circles[currentCircle].x, y: circles[currentCircle].y +(amountV * direction.y) };
+				while( canMove(circles[currentCircle], target) ){
 					circles[currentCircle].x = target.x;
 					circles[currentCircle].y = target.y;
+					target = {x:circles[currentCircle].x, y: circles[currentCircle].y +(amountV * direction.y) };
 					moved = true;
 				}
 
@@ -186,6 +245,44 @@
 		return r;
 	}
 
+	/*
+		{radius: radius * 0.025, amount: 15},
+		{radius: radius * 0.125, amount: 10},
+		{radius: radius * 0.25, amount: 2},
+		{radius: radius * 0.5, amount: 1},
+	*/
+
+	function addCircles(circleSetup){
+		var counter = 1;
+		var report = "";
+		var result = new Array();
+
+		for (key in circleSetup) { 
+			current = circleSetup[key];
+			var cRadius = current.radius * radius;
+
+			var cableWidth = current.radius * ductWidth;
+			report = report + current.amount + "x " + cableWidth + "inches \n";
+
+			for (m = 0; m < current.amount; m++) { 
+				var circle = { id:counter, x: center.x, y: startingPoint.y+cRadius, radius:cRadius };
+				result.push(circle);
+				console.debug("circle = ", circle);
+				counter ++;
+			}
+		}
+		writeCirclesReport(report);
+		return result;
+	}
+
+	function writeCirclesReport(content){
+
+		console.debug(content);
+		var report = document.getElementById("report");
+		report.innerHTML = "<pre>" + content + "</pre>";
+
+	}
+
 	function drawCircle(circle){
     	ctx.beginPath();
   		ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI, false);
@@ -196,7 +293,6 @@
 		ctx.stroke();
 	}
 	
-
 </script>
 </body>
 </html>
