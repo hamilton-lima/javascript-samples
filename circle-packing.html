@@ -1,0 +1,202 @@
+<html>
+<body>
+<p>circle packing</p>
+<canvas id="c" width="640" height="480" style="border-style:dotted;">
+<script>
+	var canvas = document.getElementById("c");
+	var ctx = canvas.getContext("2d");
+	var rect = canvas.getBoundingClientRect();
+
+	// @see https://github.com/hamilton-lima/vaca5/blob/master/lib/nmscolor.js	
+	var NMSColor = {};
+	NMSColor.VINE_TOMATO = '#EF5026';
+	NMSColor.EGGPLANT = '#3C3755';
+	NMSColor.RED_PEPPER = '#C52728';
+	NMSColor.BROCCOLI = '#2C401B';
+	
+	NMSColor.CARROT = '#E75F25';
+	NMSColor.TANGERINE = '#FAA21D';
+
+	var center = {x:rect.width/2, y:rect.height/2};
+	var radius = ( rect.height * 0.95 ) / 2;
+
+	if( rect.width < rect.height ){
+		radius = ( rect.width * 0.95 ) / 2;		
+	}
+
+	var startingPoint = {x:center.x, y:center.y-radius};
+
+	var minRadius = radius * 0.02;
+	var maxRadius = radius * 0.15;
+
+	var fillColor = "#FFFFFF";
+
+	var circles = addRandomCircles(30);
+
+	console.debug("radius",  radius );
+	console.debug("center",  center );
+	console.debug("circles", circles );
+	console.debug("startingPoint",  startingPoint );
+
+	var currentCircle = 0;
+	var direction = {x:-1, y:1};
+
+	// main 
+	loop();
+
+	function loop(){
+		ctx.clearRect(0,0,rect.width,rect.height);	
+		draw();
+		step();
+		setTimeout( loop, 30 );
+	}
+
+	function draw(){
+		drawOuterCircle();
+		drawCircles(circles);
+	}
+
+	function step(){
+		// var countMax = 5000;
+		// var count = 0;
+		
+		if( currentCircle < circles.length ){
+
+			// console.debug("circle", circles[currentCircle]);
+
+			// move 2% each step
+			var amount = circles[currentCircle].radius * 0.02;
+
+			// first goes down 
+			var target = { x: circles[currentCircle].x, y: circles[currentCircle].y +amount };
+
+			//&& (count ++ < countMax) 
+			while( canMove(circles[currentCircle], target) ){
+				circles[currentCircle].x = target.x;
+				circles[currentCircle].y = target.y;
+				target = { x: circles[currentCircle].x, y: circles[currentCircle].y +amount };			
+			}
+
+			// remove this !!
+			// count = 0;
+
+			// try to move sideways
+			// each step goes a different direction
+			direction.x = direction.x *-1;
+
+			//console.debug("direction", direction);
+			// console.debug("amount", amount);
+			var moved = true;
+
+			// && (count ++ < countMax ) 
+			while( moved ){
+
+				moved = false;
+
+				// tries to go and left or right depending on direction
+				var target = {x:circles[currentCircle].x +(amount *direction.x), y: circles[currentCircle].y };
+				if( canMove(circles[currentCircle], target) ){
+					circles[currentCircle].x = target.x;
+					circles[currentCircle].y = target.y;
+					moved = true;
+				}
+
+				// tries to go down
+				var target = {x:circles[currentCircle].x, y: circles[currentCircle].y +(amount * direction.y) };
+				if( canMove(circles[currentCircle], target) ){
+					circles[currentCircle].x = target.x;
+					circles[currentCircle].y = target.y;
+					moved = true;
+				}
+
+			}
+
+			currentCircle ++;
+		}
+	}
+
+	function canMove(circle, target){
+
+		// console.debug("canMove()", circle, target);
+
+		// check if inside the outercircle
+		var d = distance( target.x, target.y, center.x, center.y );
+		// console.debug("canMove() - center distance", d );
+
+		// outside the outer circle ...
+		if( d > (radius - circle.radius)){
+			// console.debug("canMove() - moving cant move outside", circle.id);
+			return false;
+		}
+
+		// check if colides with each other
+		// check backwards to check only the elements that already moved
+		for (i = currentCircle-1; i >=0 ; i--) { 
+			
+			var d = distance( target.x, target.y, circles[i].x, circles[i].y );
+
+			// outside the outer circle ...
+			if( d < (circle.radius + circles[i].radius)){
+				// console.debug("canMove() - colision from/to", circle.id, circles[i].id );
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	function distance(x1,y1,x2,y2){
+		var xd = x2 - x1;
+		var yd = y2 - y1;
+		var result = Math.sqrt( Math.pow(xd,2) + Math.pow(yd,2));
+		return result;
+	}
+
+
+	function drawCircles(circles){
+		for (i = 0; i < circles.length ; i++) { 
+			drawCircle(circles[i]);
+		}
+	}
+
+	function drawOuterCircle(){
+    	ctx.beginPath();
+  		ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI, false);
+ 		ctx.fillStyle = fillColor;
+		ctx.fill();
+		ctx.lineWidth = 2;
+		ctx.strokeStyle = NMSColor.BROCCOLI;
+		ctx.stroke();
+	}
+
+	function addRandomCircles(n){
+		var result = new Array();
+		for (i = 0; i < n ; i++) { 
+			var cRadius = randomRadius();
+			var circle = { id:i, x: center.x, y: startingPoint.y+cRadius, radius:cRadius };
+			result.push(circle);
+			console.debug("random circle = ", circle);
+		}
+		return result;
+	}
+
+	function randomRadius(){
+		var range = maxRadius - minRadius;
+		var r = minRadius + (range * Math.random()); 
+		return r;
+	}
+
+	function drawCircle(circle){
+    	ctx.beginPath();
+  		ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI, false);
+		ctx.fillStyle = NMSColor.TANGERINE;
+		ctx.fill();
+		ctx.lineWidth = 2;
+		ctx.strokeStyle = NMSColor.VINE_TOMATO;
+		ctx.stroke();
+	}
+	
+
+</script>
+</body>
+</html>
