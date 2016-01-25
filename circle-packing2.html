@@ -65,6 +65,13 @@
 		{radius: 0.5, amount: 1, color: group1},
 	];
 
+	var circleSetupBiggestFirstThenASC = [
+		{radius: 0.5, amount: 1, color: group1},
+		{radius: 0.025, amount: 15, color: group1},
+		{radius: 0.125, amount: 10, color: group1},
+		{radius: 0.25, amount: 2, color: group1}
+	];
+
 	var circleSetupMixed = [
 		{radius: 0.5, amount: 1, color: group1},
 		{radius: 0.025, amount: 5, color: group1},
@@ -78,14 +85,6 @@
 		{radius: 0.5, amount: 2, color: group1}
 	];
 
-	var circleSetupBiggestFirstThenASC = [
-		{radius: 0.5, amount: 1, color: group1},
-		{radius: 0.025, amount: 15, color: group1},
-		{radius: 0.125, amount: 10, color: group1},
-		{radius: 0.25, amount: 2, color: group1}
-	];
-
-//
 	var circleSetup2BigMix = [
 		{radius: 0.5, amount: 1, color: group1},
 		{radius: 0.125, amount: 6, color: group1},
@@ -117,8 +116,20 @@
 		{radius: 0.125, amount: 8, color: group2},
 	];
 
-	var circles = addCircles(circleSetupSmallerFirst);
-//	var circles = addRandomCircles(50);
+	// var circles = addRandomCircles(50);
+	// var circles = addCircles(circleSetupSmallerFirst);
+	// var circles = addCircles(circleSetupBiggestFirstThenASC);
+	// var circles = addCircles(circleSetupMixed);
+	// var circles = addCircles(circleSetup2Big);
+	// var circles = addCircles(circleSetup2BigMix);
+	// var circles = addCircles(circleSetupSmallerFirstGroups);
+	// var circles = addCircles(circleSetupSmallerFirstGroups2);
+	var circles = addCircles(circleSetupSmallerFirstGroups3);
+	
+	
+	
+	
+
 	var currentCircle = 0;
 
 	var startTime = (new Date()).getTime();
