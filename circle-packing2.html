@@ -1,6 +1,6 @@
 <html>
 <body>
-<p>circle packing</p>
+<p>circle rotate</p>
 <div id="report">...</div>
 <canvas id="c" width="640" height="480" style="border-style:dotted;">
 
@@ -11,24 +11,25 @@
 
 	// @see https://github.com/hamilton-lima/vaca5/blob/master/lib/nmscolor.js	
 	var NMSColor = {};
-	NMSColor.PERSIMMON = '#FAA21D';
-	NMSColor.MUSCAT_GRAPES = '#AD709A';
-	NMSColor.RED_BELLPEPPER = '#D12728';
-	NMSColor.CARROT = '#E75F25';
-	NMSColor.GREEN_CABBAGE = '#B4C346';
 	NMSColor.PINEAPPLE = '#E2A528';
-	NMSColor.DRAGON_FRUIT = '#C9A62E';
-	NMSColor.ZUCCHINI = '#93A13F';
-	NMSColor.KALE = '#47642E';
 	NMSColor.CUCUMBER = '#456033';
-
 	NMSColor.VINE_TOMATO = '#EF5026';
-	NMSColor.EGGPLANT = '#3C3755';
-	NMSColor.RED_PEPPER = '#C52728';
 	NMSColor.BROCCOLI = '#2C401B';
+
+	var groupDuct = {
+		fillStyle: "#FFFFFF", 
+		strokeStyle: "#222222"
+	};
+
+	var ok = {
+		fillStyle: "#00FF00", 
+		strokeStyle: "#222222"
+	};
 	
-	NMSColor.CARROT = '#E75F25';
-	NMSColor.TANGERINE = '#FAA21D';
+	var fail = {
+		fillStyle: "#FF0000", 
+		strokeStyle: "#222222"
+	};
 
 	var group1 = {
 		fillStyle: NMSColor.PINEAPPLE, 
@@ -40,23 +41,22 @@
 		strokeStyle:NMSColor.BROCCOLI
 	};
 
-
 	var center = {x:rect.width/2, y:rect.height/2};
 	var radius = ( rect.height * 0.95 ) / 2;
-
-	// to generate string about the list of cables
-	var ductWidth = 4;
-
 	if( rect.width < rect.height ){
 		radius = ( rect.width * 0.95 ) / 2;		
 	}
 
 	var startingPoint = {x:center.x, y:center.y-radius};
-
 	var minRadius = radius * 0.02;
 	var maxRadius = radius * 0.15;
+	
+	var ductWidth = 4;
 
-	var fillColor = "#FFFFFF";
+	var speed = 5;
+	var rad = Math.PI / 180;
+	var angleStep = rad * speed;
+	var circleRad = 2 * Math.PI
 
 	var circleSetupSmallerFirst = {
 		0:{radius: 0.025, amount: 15, color: group1},
@@ -119,106 +119,114 @@
 	];
 
 	var circles = addCircles( circleSetupSmallerFirstGroups3);
-	// var circles = addRandomCircles(40);
-
-	console.debug("radius",  radius );
-	console.debug("center",  center );
-	console.debug("circles", circles );
-	console.debug("startingPoint",  startingPoint );
-
+	// var circles = addRandomCircles(20);
 	var currentCircle = 0;
-	var direction = {x:-1, y:1};
 
 	// main 
 	loop();
 
+	function randomRadius(threshold){
+		var range = threshold.max - threshold.min;
+		var r =  threshold.min + (range * Math.random()); 
+		return r;
+	}
+
 	function loop(){
 		ctx.clearRect(0,0,rect.width,rect.height);	
-		draw();
 		step();
+		draw();
 		setTimeout( loop, 30 );
 	}
 
 	function draw(){
-		drawOuterCircle();
+		drawDuct();
 		drawCircles(circles);
 	}
 
+	function drawDuct(){
+		var circle = { id:"inner", x: center.x, y: center.y, radius:radius, color: groupDuct};
+		drawCircle(circle);
+	}
+
 	function step(){
-		// var countMax = 5000;
-		// var count = 0;
-		
-		if( currentCircle < circles.length ){
 
-			// console.debug("circle", circles[currentCircle]);
-
-			// move 
-			var amountV = circles[currentCircle].radius * 0.01;
-			var amountH = circles[currentCircle].radius * 0.01;
-
-			var sideRetries = 0;
-			var maxSideRetries = 15;
-			var sideRetryDirection = 1;
-
-			// first goes down 
-			var target = { x: circles[currentCircle].x, y: circles[currentCircle].y +amountV };
-
-			//&& (count ++ < countMax) 
-			while( canMove(circles[currentCircle], target) ){
-				circles[currentCircle].x = target.x;
-				circles[currentCircle].y = target.y;
-				target = { x: circles[currentCircle].x, y: circles[currentCircle].y +amountV };			
+		if( currentCircle < circles.length && currentCircle > 0 ){
+			positionCircle(currentCircle);
+			currentCircle = currentCircle+1;
+		} else {
+			if(currentCircle == 0 ){
+				circles[0].x = center.x;
+				circles[0].y = center.y + radius - circles[0].radius;
+				currentCircle = currentCircle+1;
 			}
-
-			// move up 3 steps
-			// circles[currentCircle].y = circles[currentCircle].y - (amountV * 3);
-
-			// remove this !!
-			// count = 0;
-
-			// try to move sideways
-			// each step goes a different direction
-			direction.x = direction.x *-1;
-
-			//console.debug("direction", direction);
-			// console.debug("amount", amount);
-			var moved = true;
-
-			// && (count ++ < countMax ) 
-			while( moved ){
-
-				moved = false;
-
-				sideRetries = 0;
-				while( sideRetries ++ < maxSideRetries){
-
-					sideRetryDirection = sideRetryDirection *-1;
-					var sideAmount = amountH * sideRetryDirection ; // * sideRetries
-
-					// tries to go and left or right depending on direction
-					var target = {x:circles[currentCircle].x +(sideAmount * direction.x * sideRetryDirection), y: circles[currentCircle].y };
-					if( canMove(circles[currentCircle], target) ){
-						circles[currentCircle].x = target.x;
-						circles[currentCircle].y = target.y;
-						moved = true;
-					} 
-
-				}
-
-
-				// tries to go down
-				var target = {x:circles[currentCircle].x, y: circles[currentCircle].y +(amountV * direction.y) };
-				while( canMove(circles[currentCircle], target) ){
-					circles[currentCircle].x = target.x;
-					circles[currentCircle].y = target.y;
-					target = {x:circles[currentCircle].x, y: circles[currentCircle].y +(amountV * direction.y) };
-					moved = true;
-				}
-
-			}
-
-			currentCircle ++;
 		}
+	}
+
+	// check on each other circle ALREADY IN POSITION (n < currentCircle)
+	// what are the lowest position
+	function positionCircle(n){
+		var lowestPoint = {x:-1, y:-1};
+
+		var otherN = 0;
+		while( otherN < n ){
+			var point = getLowestPointAroundOtherCircle(circles[n],circles[otherN]);
+			console.debug('lowest from ', circles[otherN], point );
+			
+			if( point.y > lowestPoint.y ){
+				lowestPoint = point;
+			}
+
+			otherN = otherN +1;
+		}
+
+		circles[n].x = lowestPoint.x;
+		circles[n].y = lowestPoint.y;
+
+	}
+
+	function getLowestPointAroundOtherCircle(outerCircle,centerCircle){
+		var angle = 0;
+		var lowestPoint = {x:-1, y:-1};
+
+		while( angle < circleRad ){
+
+			var point = getCirclePositionAround(centerCircle.x, centerCircle.y, centerCircle.radius, angle, outerCircle.radius);
+
+			// only valid points
+			if( canMove(outerCircle, point)){
+				if( point.y > lowestPoint.y ){
+					lowestPoint = point;
+				}
+			} else {
+				console.debug('CANT move', point );
+			}
+
+			angle = angle + angleStep;
+		}
+
+		return lowestPoint;
+	}
+	/**
+	x,y,radius : from the source circle a
+	angle : in radians
+	radius2 : outside circle b radius 
+	*/
+	function getCirclePositionAround(ax,ay,aradius,angle,bradius){
+		var h = aradius + bradius;
+		var sx  = h * Math.cos(angle);
+		var sy  = h * Math.sin(angle);
+		var point = { x: ax + sx, y: ay +sy };
+		return point;
+	}
+
+	function drawCircle(circle){
+    	ctx.beginPath();
+  		ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI, false);
+		ctx.fillStyle = circle.color.fillStyle;
+		ctx.fill();
+		ctx.lineWidth = 2;
+		ctx.strokeStyle = circle.color.strokeStyle;
+		ctx.stroke();
 	}
 
 	function canMove(circle, target){
@@ -227,7 +235,7 @@
 
 		// check if inside the outercircle
 		var d = distance( target.x, target.y, center.x, center.y );
-		// console.debug("canMove() - center distance", d );
+		// console.debug("canMove() - distance from center/radius", d , radius);
 
 		// outside the outer circle ...
 		if( d > (radius - circle.radius)){
@@ -236,8 +244,7 @@
 		}
 
 		// check if colides with each other
-		// check backwards to check only the elements that already moved
-		for (i = currentCircle-1; i >=0 ; i--) { 
+		for (i = 0; i < currentCircle; i++) { 
 			
 			var d = distance( target.x, target.y, circles[i].x, circles[i].y );
 
@@ -248,6 +255,7 @@
 			}
 		}
 
+		// console.debug('YES can move to', target);
 		return true;
 	}
 
@@ -263,16 +271,6 @@
 		for (i = 0; i < circles.length ; i++) { 
 			drawCircle(circles[i]);
 		}
-	}
-
-	function drawOuterCircle(){
-    	ctx.beginPath();
-  		ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI, false);
- 		ctx.fillStyle = fillColor;
-		ctx.fill();
-		ctx.lineWidth = 2;
-		ctx.strokeStyle = NMSColor.BROCCOLI;
-		ctx.stroke();
 	}
 
 	function addRandomCircles(n){
@@ -291,13 +289,7 @@
 		var r = minRadius + (range * Math.random()); 
 		return r;
 	}
-
-	/*
-		{radius: radius * 0.025, amount: 15},
-		{radius: radius * 0.125, amount: 10},
-		{radius: radius * 0.25, amount: 2},
-		{radius: radius * 0.5, amount: 1},
-	*/
+	
 
 	function addCircles(circleSetup){
 		var counter = 1;
@@ -309,7 +301,7 @@
 			var cRadius = current.radius * radius;
 
 			var cableWidth = current.radius * ductWidth;
-			report = report + current.amount + "x " + cableWidth + "inches \n";
+			report = report + current.amount + "x " + cableWidth + " inches \n";
 
 			for (m = 0; m < current.amount; m++) { 
 				var circle = { id:counter, x: center.x, y: startingPoint.y+cRadius, radius:cRadius, color: current.color };
@@ -330,16 +322,6 @@
 
 	}
 
-	function drawCircle(circle){
-    	ctx.beginPath();
-  		ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI, false);
-		ctx.fillStyle = circle.color.fillStyle;
-		ctx.fill();
-		ctx.lineWidth = 2;
-		ctx.strokeStyle = circle.color.strokeStyle;
-		ctx.stroke();
-	}
-	
 </script>
 </body>
 </html>
