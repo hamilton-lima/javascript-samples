@@ -1,0 +1,103 @@
+<html>
+<body>
+<p>circle rotate</p>
+<div id="report">...</div>
+<canvas id="c" width="640" height="480" style="border-style:dotted;">
+
+<script>
+	var canvas = document.getElementById("c");
+	var ctx = canvas.getContext("2d");
+	var rect = canvas.getBoundingClientRect();
+
+	// @see https://github.com/hamilton-lima/vaca5/blob/master/lib/nmscolor.js	
+	var NMSColor = {};
+	NMSColor.PINEAPPLE = '#E2A528';
+	NMSColor.CUCUMBER = '#456033';
+	NMSColor.VINE_TOMATO = '#EF5026';
+	NMSColor.BROCCOLI = '#2C401B';
+
+
+	var group1 = {
+		fillStyle: NMSColor.PINEAPPLE, 
+		strokeStyle: NMSColor.CUCUMBER
+	};
+
+	var group2 = {
+		fillStyle: NMSColor.VINE_TOMATO , 
+		strokeStyle:NMSColor.BROCCOLI
+	};
+
+	var center = {x:rect.width/2, y:rect.height/2};
+	var radius = ( rect.height * 0.95 ) / 2;
+	if( rect.width < rect.height ){
+		radius = ( rect.width * 0.95 ) / 2;		
+	}
+
+	var circleThreshold = {min:radius*0.1, max:radius*0.4};
+	var innerRadius = randomRadius(circleThreshold);
+	var outerRadius = randomRadius(circleThreshold);
+	
+	var speed = 5;
+	var angle = 0;
+	
+	var rad = Math.PI / 180;
+	var angleStep = rad * speed;
+
+	// main 
+	loop();
+
+	function randomRadius(threshold){
+		var range = threshold.max - threshold.min;
+		var r =  threshold.min + (range * Math.random()); 
+		return r;
+	}
+
+	function loop(){
+		ctx.clearRect(0,0,rect.width,rect.height);	
+		draw();
+		setTimeout( loop, 30 );
+	}
+
+	function draw(){
+		drawInnerCircle();
+		drawOutercircle();
+	}
+
+	function drawInnerCircle(){
+		var circle = { id:"inner", x: center.x, y: center.y, radius:innerRadius, color: group1};
+		drawCircle(circle);
+	}
+
+	function drawOutercircle(){
+		angle = angle + angleStep;
+		console.debug("angle", angle);
+
+		var h = innerRadius + outerRadius;
+		console.debug("hypotenuse", h);
+
+		var sx  = h * Math.cos(angle);
+		console.debug("cos(a)", Math.cos(angle) );
+		console.debug("sx", sx );
+
+		var sy  = h * Math.sin(angle);
+		console.debug("sin(a)", Math.sin(angle) );
+		console.debug("sy", sy );
+
+		var circle = { id:"outer", x: center.x + sx, y: center.y +sy , radius:outerRadius, color: group2};
+		console.debug( circle);
+		drawCircle(circle);
+	}
+
+	function drawCircle(circle){
+    	ctx.beginPath();
+  		ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI, false);
+		ctx.fillStyle = circle.color.fillStyle;
+		ctx.fill();
+		ctx.lineWidth = 2;
+		ctx.strokeStyle = circle.color.strokeStyle;
+		ctx.stroke();
+	}
+	
+</script>
+</body>
+</html>
