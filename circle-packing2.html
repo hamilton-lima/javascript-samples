@@ -116,7 +116,15 @@
 		{radius: 0.125, amount: 8, color: group2},
 	];
 
-	// var circles = addRandomCircles(50);
+	var circleStress = [
+		{radius: 0.25, amount: 2, color: group1},
+		{radius: 0.125, amount: 25, color: group2},
+		{radius: 0.025, amount: 160, color: group1},
+		{radius: 0.125, amount: 11, color: group1},
+		{radius: 0.025, amount: 80, color: group1},
+	];
+
+	//var circles = addRandomCircles(50);
 	// var circles = addCircles(circleSetupSmallerFirst);
 	// var circles = addCircles(circleSetupBiggestFirstThenASC);
 	// var circles = addCircles(circleSetupMixed);
@@ -124,12 +132,8 @@
 	// var circles = addCircles(circleSetup2BigMix);
 	// var circles = addCircles(circleSetupSmallerFirstGroups);
 	// var circles = addCircles(circleSetupSmallerFirstGroups2);
+	// var circles = addCircles(circleStress);
 	var circles = addCircles(circleSetupSmallerFirstGroups3);
-	
-	
-	
-	
-
 	var currentCircle = 0;
 
 	var startTime = (new Date()).getTime();
