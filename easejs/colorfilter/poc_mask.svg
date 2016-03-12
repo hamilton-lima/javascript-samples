@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.3452707"
-     inkscape:cx="100"
-     inkscape:cy="100"
+     inkscape:zoom="1.4729193"
+     inkscape:cx="284.95756"
+     inkscape:cy="20.488263"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -72,31 +72,13 @@
        id="path3006"
        inkscape:connector-curvature="0" />
     <g
-       id="g3799"
-       inkscape:export-filename="C:\Users\Hamilton\Desktop\layer1.png"
-       inkscape:export-xdpi="115.19"
-       inkscape:export-ydpi="115.19">
-      <rect
-         y="873.56763"
-         x="224.1386"
-         height="157.58911"
-         width="156.10242"
-         id="rect3787"
-         style="fill:none;fill-opacity:1;stroke:none" />
-      <path
-         style="fill:#000000;fill-opacity:1;stroke:none"
-         d="m 372.9048,952.36723 c -7.00721,40.31866 -31.69774,74.09767 -70.79887,74.09767 -39.10113,0 -64.37527,-33.68192 -70.79887,-74.09767 -7.5186,-47.30523 24.4809,-74.70978 70.79887,-74.09775 47.2937,0.62494 78.88803,27.55376 70.79887,74.09775 z"
-         id="path3783"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="sssss" />
-    </g>
-    <g
        id="g3795"
        inkscape:export-filename="C:\Users\Hamilton\Desktop\layer2.png"
-       inkscape:export-xdpi="115.19"
-       inkscape:export-ydpi="115.19">
+       inkscape:export-xdpi="28.555273"
+       inkscape:export-ydpi="28.555273"
+       transform="translate(200.73148,171.15944)">
       <rect
-         style="fill:none;fill-opacity:1;stroke:none"
+         style="fill:none;stroke:none"
          id="rect3789"
          width="156.10242"
          height="157.58911"
@@ -120,14 +102,57 @@
          x="111.50173"
          y="833.07544">export the groups</tspan></text>
     <g
-       inkscape:export-ydpi="115.19"
-       inkscape:export-xdpi="115.19"
-       inkscape:export-filename="C:\Users\Hamilton\Desktop\layer1-green.png"
-       id="g2994"
-       transform="translate(196.98638,-2.2300344)">
+       id="g3794"
+       inkscape:export-filename="C:\Users\Hamilton\Dropbox\code-forge\javascript-samples\easejs\colorfilter\layer3.png"
+       inkscape:export-xdpi="28.555271"
+       inkscape:export-ydpi="28.555271"
+       transform="translate(125.45718,7.1689854)">
       <rect
          style="fill:none;stroke:none"
-         id="rect2996"
+         id="rect3770"
+         width="156.10242"
+         height="157.58911"
+         x="477.62625"
+         y="876.32965" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path2998"
+         d="m 557.69656,888.8894 -22.7399,22.03661 17.69961,-1.64103 -14.18313,26.95969 30.59337,-35.51645 -16.29302,1.17216 z"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+    </g>
+    <path
+       inkscape:connector-curvature="0"
+       id="path2998-2"
+       d="m 110.53133,894.74676 -22.7399,22.03661 17.69961,-1.64103 -14.18313,26.95969 30.59337,-35.51645 -16.29302,1.17216 z"
+       style="fill:#ffff00;fill-opacity:1;stroke:none" />
+    <g
+       id="g3829"
+       inkscape:export-filename="C:\Users\Hamilton\Dropbox\code-forge\javascript-samples\easejs\colorfilter\layer4.png"
+       inkscape:export-xdpi="115"
+       inkscape:export-ydpi="115">
+      <rect
+         y="871.46301"
+         x="241.81741"
+         height="157.58911"
+         width="156.10242"
+         id="rect3787"
+         style="fill:none;stroke:none" />
+      <path
+         sodipodi:nodetypes="cssccccccc"
+         inkscape:connector-curvature="0"
+         id="path3816"
+         d="m 293.63187,1008.9031 c 2.21987,4.4069 52.45618,13.2826 56.09374,-3.2812 0.87609,-3.9893 -0.31689,-13.01546 -2.14566,-11.88857 -4.53224,2.7928 -42.52712,9.02947 -48.75763,1.0417 -10.23718,-6.36763 -6.73338,10.87747 -5.19045,14.12807 z m 7.25733,-6.3942 c 12.47571,4.5325 30.56201,4.5262 40.30221,-0.631 1.49898,-0.5395 4.25229,1.8969 3.5342,3.8065 -2.98156,7.9293 -44.14921,3.7034 -45.96874,1.5937 -2.85574,-3.311 0.0158,-4.7504 2.13232,-4.7692 z"
+         style="fill:#000000;stroke:none;fill-opacity:1" />
+    </g>
+    <g
+       inkscape:export-ydpi="28.555271"
+       inkscape:export-xdpi="28.555271"
+       inkscape:export-filename="C:\Users\Hamilton\Desktop\layer1.png"
+       id="g3821"
+       transform="translate(6.7347896,206.67386)">
+      <rect
+         style="fill:none;stroke:none"
+         id="rect3823"
          width="156.10242"
          height="157.58911"
          x="224.1386"
@@ -135,9 +160,9 @@
       <path
          sodipodi:nodetypes="sssss"
          inkscape:connector-curvature="0"
-         id="path2998"
+         id="path3825"
          d="m 372.9048,952.36723 c -7.00721,40.31866 -31.69774,74.09767 -70.79887,74.09767 -39.10113,0 -64.37527,-33.68192 -70.79887,-74.09767 -7.5186,-47.30523 24.4809,-74.70978 70.79887,-74.09775 47.2937,0.62494 78.88803,27.55376 70.79887,74.09775 z"
-         style="fill:#7fff00;fill-opacity:1;stroke:none" />
+         style="fill:#000000;fill-opacity:1;stroke:none" />
     </g>
   </g>
   <g

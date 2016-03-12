@@ -1,0 +1,70 @@
+<html>
+<body>
+<canvas id="filter" width="800" height="600">
+<script src="easeljs-0.8.2.min.js"></script>
+<script src="mask-builder.js"></script>
+<script src="nmscolor.js"></script>
+
+<script>
+
+	var mask = new MaskBuilder();
+	mask.addLayer('base', 'layer1.png');
+	mask.addLayer('eyes', 'layer2.png');
+	mask.addLayer('bolt', 'layer3.png');
+	mask.addLayer('mouth', 'layer4.png');
+
+    var stage = new createjs.Stage("filter");
+
+	mask.onload = function(){
+
+		var maxTotal = 64;
+		var maxLine = 8;
+		var line = 0;
+		var total = 0;
+
+		var border = 10;
+		var x = border;
+		var y = border;
+		var w = 50;
+		var h = 50;
+
+		while( total < maxTotal ){
+
+			r1 = Math.floor((Math.random() * NMSCOlorArray.length));
+			r2 = Math.floor((Math.random() * NMSCOlorArray.length));
+			r3 = Math.floor((Math.random() * NMSCOlorArray.length));
+			r4 = Math.floor((Math.random() * NMSCOlorArray.length));
+
+			console.log('---- colors ', r1, r2 ); 
+			var image = mask.build(w, h, [
+				{name:'base',  color: NMSCOlorArray[r1] }, 
+				{name:'eyes',  color: NMSCOlorArray[r2] },
+				{name:'bolt',  color: NMSCOlorArray[r3] },
+				{name:'mouth', color: NMSCOlorArray[r4] }]);
+
+			var head = new createjs.Bitmap(image);
+			head.x = x;
+			head.y = y;
+
+			stage.addChild(head);
+			stage.update();
+
+			total ++;
+			line ++;
+
+			x = x + w + border;
+
+			if( line >= maxLine ){
+				line = 0;
+				y = y + h + border;
+				x = border;
+			}
+
+		}
+
+	}
+
+</script>
+
+</body>
+</html>
