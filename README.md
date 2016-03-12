@@ -42,3 +42,18 @@ Based on two point on the screen, click on the screen to see the results, it cal
 
 live demo : http://hamilton-lima.github.io/javascript-samples/parallel.html
 
+### Sin Curve
+Draws a sin curve based on parameters set in the code
+
+![masks](http://hamilton-lima.github.io/javascript-samples/screenshots/curva-senoide.png)
+
+live demo : http://hamilton-lima.github.io/javascript-samples/curva-senoide.html
+
+### Other examples 
+
+| example | description | 
+| ----------- | ----------- | 
+| [edit-modify-meter](http://hamilton-lima.github.io/javascript-samples/drag_drop_crop/upload_file.html) | drag and drop a file to the browser |
+| [easejs-balls](http://hamilton-lima.github.io/javascript-samples/easejs/colisao-de-bolinhas.html) | draw and move balls with easejs |
+
+
