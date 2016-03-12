@@ -1,0 +1,68 @@
+<html>
+<body>
+<canvas id="filter" width="800" height="600">
+<script src="easeljs-0.8.2.min.js"></script>
+
+<script>
+	// @see https://jsfiddle.net/lannymcnie/AL9zA/
+
+    var stage = new createjs.Stage("filter");
+	var head = new createjs.Container();
+  	head.x = 300;
+   	head.y = 300;
+	head.regX = 100; 
+	head.regY = 100; 
+
+	var image = new Image();
+	image.src = "layer1.png";
+
+	image.onload = function(){
+		image2 = colorFilter(image, 255, 0, 0);
+		var layer1 = new createjs.Bitmap(image2);
+		head.addChild(layer1);
+		head.addChild(layer2);
+	} 
+
+
+	function colorFilter(img, red, green, blue){
+		var foo = document.createElement("canvas");
+		foo.width = img.width;
+		foo.height = img.height;
+		var ctx = foo.getContext('2d');
+		ctx.drawImage(img, 0, 0);
+
+		var imageData = ctx.getImageData(0, 0, img.width, img.height);
+		var data = imageData.data;
+
+		var l = data.length;
+		var counter = 0;
+		for (var i=0; i<l; i+=4) {
+			data[i] = data[i] + red;
+			data[i+1] = data[i+1] + green;
+			data[i+2] = data[i+2] + blue;
+		}
+
+		ctx.putImageData(imageData, 0, 0);
+
+		var image = new Image();
+		image.src = foo.toDataURL("image/png");
+		return image;
+ 	}
+
+	var layer2 = new createjs.Bitmap("layer2.png");
+    stage.addChild(head);
+
+	createjs.Ticker.addEventListener("tick", headTick);
+	function headTick() {
+		head.rotation += 10;
+	}
+
+   	createjs.Ticker.addEventListener("tick", handleTick);
+    function handleTick() {
+        stage.update();
+    }    
+
+</script>
+
+</body>
+</html>
