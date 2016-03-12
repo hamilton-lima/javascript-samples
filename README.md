@@ -69,6 +69,6 @@ source : https://github.com/hamilton-lima/javascript-samples/blob/master/curva-s
 | demo | source | description | 
 | ---- | ------ | ----------- | 
 | [demo](http://hamilton-lima.github.io/javascript-samples/drag_drop_crop/upload_file.html) | [source](https://github.com/hamilton-lima/javascript-samples/blob/master/drag_drop_crop/upload_file.html)| drag and drop a file to the browser |
-| [demo](http://hamilton-lima.github.io/javascript-samples/easejs/colisao-de-bolinhas.html) | [source](https://github.com/hamilton-lima/javascript-samples/blob/master/easejs/colisao-de-bolinhas.html)| | draw and move balls with easejs |
+| [demo](http://hamilton-lima.github.io/javascript-samples/easejs/colisao-de-bolinhas.html) | [source](https://github.com/hamilton-lima/javascript-samples/blob/master/easejs/colisao-de-bolinhas.html)| draw and move balls with easejs |
 
 
