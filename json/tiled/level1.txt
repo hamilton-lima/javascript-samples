@@ -19,13 +19,13 @@
 	usar container deslocado
 	
 	
-var KEYCODE_SPACE = 32; 	//usefull keycode
-var KEYCODE_UP = 38; 	//usefull keycode
-var KEYCODE_LEFT = 37; 	//usefull keycode
-var KEYCODE_RIGHT = 39; 	//usefull keycode
-var KEYCODE_W = 87; 		//usefull keycode
-var KEYCODE_A = 65; 		//usefull keycode
-var KEYCODE_D = 68; 		//usefull keycode
+var KEYCODE_SPACE = 32; 	//useful keycode
+var KEYCODE_UP = 38; 	//useful keycode
+var KEYCODE_LEFT = 37; 	//useful keycode
+var KEYCODE_RIGHT = 39; 	//useful keycode
+var KEYCODE_W = 87; 		//useful keycode
+var KEYCODE_A = 65; 		//useful keycode
+var KEYCODE_D = 68; 		//useful keycode
 
 	document.onkeydown = handleKeyDown;
 	document.onkeyup = handleKeyUp;
