@@ -1,0 +1,85 @@
+<html>
+<body>
+Mova o mouse para verificar a colisão<br>
+<canvas width="640" height="480" id="c1" style="border-style:dotted;"/>
+<script>
+	var c = document.getElementById("c1");
+	var rect = c.getBoundingClientRect();
+	var ctx = c.getContext("2d");
+	var blue = '#8ED6FF';
+	var red = '#C52728';
+	
+	ctx.fillStyle = blue;
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'black';
+	
+	var width = 350;
+	var height = 50;
+
+	var width2 = 50;
+	var height2 = 50;
+	
+	var imagemPronta = false;
+	var r1 = { 
+		x: (rect.width/2) - (width/2), 
+		y: (rect.height/2) - (height/2), 
+		width: width, height: height };
+		
+	var r2 = { x: 0, y: 0, width: 0, height: 0 };
+	
+	c.addEventListener('mousemove', MeuMouseApertou, false);
+	
+	function MeuMouseApertou(e){
+		r2 = {
+			x: (e.x - rect.left) - (width2/2),
+			y: (e.y - rect.top) - (height2/2),
+			width: width2,
+			height: height2
+		};
+		console.debug(r2);
+	
+	}
+
+	function intersect(a,b){
+		c1 = Math.abs( (b.x+(b.width/2)) - (a.x+(a.width/2)) );
+		c2 = Math.abs( (b.y+(b.height/2)) - (a.y+(a.height/2)) );
+
+		d1 = (b.width/2) + (a.width/2);
+		d2 = (b.height/2) + (a.height/2);
+		
+		if( (c1 < d1) && (c2 < d2) ){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
+	function drawBox(b){
+		ctx.rect(b.x,b.y,b.width,b.height);
+	}
+	
+	function executar(){
+		ctx.clearRect(0,0,rect.width,rect.height);
+		ctx.beginPath();
+		ctx.fillStyle = blue;	
+		
+		drawBox(r1);
+
+		if( r2.width > 0 ){
+			if( intersect(r1,r2) ){
+				ctx.fillStyle = red;
+			} 
+			drawBox(r2);
+		}
+		
+		ctx.fill();
+        ctx.stroke();
+		setTimeout( executar, 30 );
+	}
+
+	executar();
+
+</script>
+</body>
+</html>
